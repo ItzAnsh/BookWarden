@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct BookWardenApp: App {
+    
+    @AppStorage("isOnboarding") var isOnboarding: Bool = false
+    @AppStorage("userType") var userType: String = ""
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            UserView()
         }
     }
 }
