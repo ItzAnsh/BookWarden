@@ -13,19 +13,7 @@ struct UserHomeGenresSubView: View {
     var colors: [Color] = [.blue, .red, .green, .yellow, .purple, .pink, .gray, .indigo]
     var body: some View {
         VStack() {
-            HStack() {
-                HStack() {
-                    Text("Categories")
-                    
-                    Image(systemName: "chevron.right")
-                }
-                .foregroundStyle(.accent)
-                .fontWeight(.semibold)
-                .font(.title2)
-                
-                Spacer()
-            }
-            .safeAreaPadding()
+            TitleComponent(title: "Categories", page: BooksCategoryListView(pageTitle: "Categories"))
             
             ScrollView(.horizontal) {
                 VStack(spacing: 19) {

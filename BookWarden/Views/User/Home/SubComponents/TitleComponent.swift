@@ -7,25 +7,24 @@
 
 import SwiftUI
 
-struct TitleComponent: View {
+struct TitleComponent<Destination: View>: View {
     var title: String
+    var page: Destination
     var body: some View {
-        HStack() {
+        NavigationLink (destination: page) {
             HStack() {
-                Text(title)
+                HStack() {
+                    Text(title)
+                    
+                    Image(systemName: "chevron.right")
+                }
+                .foregroundStyle(.accent)
+                .fontWeight(.semibold)
+                .font(.title2)
                 
-                Image(systemName: "chevron.right")
+                Spacer()
             }
-            .foregroundStyle(.accent)
-            .fontWeight(.semibold)
-            .font(.title2)
-            
-            Spacer()
+            .safeAreaPadding()
         }
-        .safeAreaPadding()
     }
-}
-
-#Preview {
-    TitleComponent(title: "Title")
 }

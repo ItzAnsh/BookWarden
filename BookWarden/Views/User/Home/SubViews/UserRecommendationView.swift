@@ -12,7 +12,7 @@ struct UserRecommendationView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            TitleComponent(title: "You May Like")
+            TitleComponent(title: "You May Like", page: ArrivalBooks())
             
             ScrollView(.horizontal) {
                 HStack(spacing: 17) {
@@ -24,6 +24,7 @@ struct UserRecommendationView: View {
                                 .scaledToFit()
                                 
                         } placeholder: {}
+                        
                         
                             
                     }

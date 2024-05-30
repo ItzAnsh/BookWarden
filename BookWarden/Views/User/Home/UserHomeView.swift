@@ -41,7 +41,7 @@ struct UserHomeView: View {
                         UserHomeGenresSubView()
                         
                         VStack() {
-                            TitleComponent(title: "New Arrivals")
+                            TitleComponent(title: "New Arrivals", page: ArrivalBooks())
                             
                             VStack() {
                                 ScrollView(.horizontal) {
