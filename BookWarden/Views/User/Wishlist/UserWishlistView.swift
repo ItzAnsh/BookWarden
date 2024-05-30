@@ -10,9 +10,16 @@ import SwiftUI
 struct UserWishlistView: View {
     var body: some View {
         NavigationStack {
-            ScrollView {
-                
+            ScrollView(){
+                VStack(spacing: 27) {
+                    ForEach(0..<10) { index in
+                        WishListItemCard(userType: .member)
+                    }
+                }
+                .safeAreaPadding()
+                    
             }
+            .scrollIndicators(.hidden)
             .navigationTitle("Wishlist")
         }
     }
