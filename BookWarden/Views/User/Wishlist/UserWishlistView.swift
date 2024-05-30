@@ -13,7 +13,7 @@ struct UserWishlistView: View {
             ScrollView(){
                 VStack(spacing: 27) {
                     ForEach(0..<10) { index in
-                        WishListItemCard(userType: .member)
+                        WishListCardView(userType: .member)
                     }
                 }
                 .safeAreaPadding()
@@ -21,6 +21,15 @@ struct UserWishlistView: View {
             }
             .scrollIndicators(.hidden)
             .navigationTitle("Wishlist")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button( action: {}) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+//                            .font(.title)
+//                            .foregroundColor(.accent)
+                    }
+                }
+            }
         }
     }
 }

@@ -19,6 +19,7 @@
 		4D2040D42C0716B4004FC6B9 /* UserHomeGenresSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2040D32C0716B4004FC6B9 /* UserHomeGenresSubView.swift */; };
 		4D2040D62C071818004FC6B9 /* TitleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2040D52C071818004FC6B9 /* TitleComponent.swift */; };
 		4D2040D82C0718E2004FC6B9 /* ArrivalCardsSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2040D72C0718E2004FC6B9 /* ArrivalCardsSubView.swift */; };
+		4D2040E52C08AF16004FC6B9 /* WishListCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2040E42C08AF16004FC6B9 /* WishListCardView.swift */; };
 		4D5ADAA82C04F0B1002EAC6A /* UserHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ADAA72C04F0B1002EAC6A /* UserHomeView.swift */; };
 		4D5ADAAA2C04F0C5002EAC6A /* LibrarianHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ADAA92C04F0C5002EAC6A /* LibrarianHomeView.swift */; };
 		4D5ADAAC2C04F0D2002EAC6A /* AdminHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ADAAB2C04F0D2002EAC6A /* AdminHomeView.swift */; };
@@ -62,6 +63,7 @@
 		4D2040D32C0716B4004FC6B9 /* UserHomeGenresSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeGenresSubView.swift; sourceTree = "<group>"; };
 		4D2040D52C071818004FC6B9 /* TitleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleComponent.swift; sourceTree = "<group>"; };
 		4D2040D72C0718E2004FC6B9 /* ArrivalCardsSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivalCardsSubView.swift; sourceTree = "<group>"; };
+		4D2040E42C08AF16004FC6B9 /* WishListCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishListCardView.swift; sourceTree = "<group>"; };
 		4D5ADAA72C04F0B1002EAC6A /* UserHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeView.swift; sourceTree = "<group>"; };
 		4D5ADAA92C04F0C5002EAC6A /* LibrarianHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarianHomeView.swift; sourceTree = "<group>"; };
 		4D5ADAAB2C04F0D2002EAC6A /* AdminHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminHomeView.swift; sourceTree = "<group>"; };
@@ -172,6 +174,14 @@
 			path = SubComponents;
 			sourceTree = "<group>";
 		};
+		4D2040E62C08AF7D004FC6B9 /* SubComponents */ = {
+			isa = PBXGroup;
+			children = (
+				4D2040E42C08AF16004FC6B9 /* WishListCardView.swift */,
+			);
+			path = SubComponents;
+			sourceTree = "<group>";
+		};
 		4D5ADAA22C04EFEE002EAC6A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +241,7 @@
 		4D5ADAB12C04F758002EAC6A /* Wishlist */ = {
 			isa = PBXGroup;
 			children = (
+				4D2040E62C08AF7D004FC6B9 /* SubComponents */,
 				4D5ADAB22C04F776002EAC6A /* UserWishlistView.swift */,
 			);
 			path = Wishlist;
@@ -397,6 +408,7 @@
 				4D5ADAAA2C04F0C5002EAC6A /* LibrarianHomeView.swift in Sources */,
 				4D2040D82C0718E2004FC6B9 /* ArrivalCardsSubView.swift in Sources */,
 				4D8F430D2C05E92A00B3F342 /* UserView.swift in Sources */,
+				4D2040E52C08AF16004FC6B9 /* WishListCardView.swift in Sources */,
 				4D2040D42C0716B4004FC6B9 /* UserHomeGenresSubView.swift in Sources */,
 				4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */,
 			);
