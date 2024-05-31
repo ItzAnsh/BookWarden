@@ -9,12 +9,16 @@ import SwiftUI
 
 @main
 struct BookWardenApp: App {
-    
     @AppStorage("isOnboarding") var isOnboarding: Bool = false
     @AppStorage("userType") var userType: String = ""
+    @AppStorage("authToken") var authToken: String = ""
     var body: some Scene {
         WindowGroup {
-            UserView()
+            if authToken != "" {
+                UserView()
+            } else {
+                Login()
+            }
         }
     }
 }
