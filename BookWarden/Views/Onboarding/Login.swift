@@ -1,105 +1,152 @@
-//
-//  Login.swift
-//  BookWarden
-//
-//  Created by Ansh Bhasin on 30/05/24.
-//
-
 import SwiftUI
 
+enum Field {
+    
+    case password
+    case emailAddress
+}
+
 struct Login: View {
-    @State var email = ""
-    @State var password = ""
+    @State private var email = ""
+    @State private var password = ""
+    @State private var loginError: String?
+    
+    @FocusState private var focusedField: Field?
+    
     @Environment(\.colorScheme) var colorScheme
+    
+//    @AppStorage("authToken") private var authToken = ""
+//    @State private var accessToken: String = ""
+    
+//    @State private var authToken: String = ""
+    
     var body: some View {
         VStack {
-            
-            ZStack() {
+            ZStack {
                 Circle()
-                    .fill(.accent)
-                    
+                    .fill(Color.accentColor)
                     .frame(width: 225, height: 225)
                     .blur(radius: 150)
+                
                 VStack {
                     Spacer()
-                    VStack() {
+                    VStack {
                         Image(systemName: "book.fill")
-                            .foregroundColor(.textPrimaryColors)
+                            .foregroundColor(Color.primary)
                             .font(.system(size: 93))
                         
                         Text("BookWarden")
-                            .foregroundStyle(.blackNAccent)
+                            .foregroundColor(Color.primary)
                             .font(.title)
-                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                            .fontWeight(.bold)
                     }
                     
                     Spacer()
+                    
                     VStack(spacing: 20) {
                         VStack(spacing: 10) {
-                            HStack() {
+                            HStack {
                                 Image(systemName: "envelope.fill")
-                                    .foregroundColor(.textPrimaryColors)
-                                    .font(.title3)
+                                    .foregroundColor(Color.primary)
+                                    .font(.headline)
                                 
                                 TextField("Email", text: $email)
+                                    .focused($focusedField, equals: .emailAddress)
+                                    .textContentType(.emailAddress)
+                                    .submitLabel(.next)
                                     .padding(.vertical, 1)
-                                    
+                                    .font(.subheadline)
                             }
                             Divider()
-                            HStack() {
+                            HStack {
                                 Image(systemName: "lock.fill")
-                                    .foregroundColor(.textPrimaryColors)
-                                    .font(.title3)
+                                    .foregroundColor(Color.primary)
+                                    .font(.headline)
                                 
-                                TextField("Passowrd", text: $password)
+                                SecureField("Password", text: $password)
+                                    .focused($focusedField, equals: .password)
+                                    .textContentType(.password)
+                                    .submitLabel(.join)
                                     .padding(.vertical, 1)
+                                    .font(.subheadline)
                             }
                         }
-                        .background(colorScheme == .light ? .white : Color(red: 28 / 255, green: 28 / 255, blue: 30 / 255))
-                        .safeAreaPadding(.all)
+                        .padding()
+                        .background(colorScheme == .light ? Color.white : Color(UIColor.systemGray6))
                         .cornerRadius(12)
                     }
                     
-                    Button(action: {}) {
+                    Button(action: {
+                        login(email: email, password: password)
+                    }) {
                         Text("Login")
                             .font(.title3)
                             .fontWeight(.bold)
-                            .foregroundStyle(.textTertiaryColors)
+                            .foregroundColor(Color.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(Color.accentColor)
+                            .cornerRadius(8)
                     }
-                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                    .padding(.vertical, 12)
-                    .background(.accent)
-                    .cornerRadius(8)
                     
-                    HStack() {
+                    if let loginError = loginError {
+                        Text(loginError)
+                            .foregroundColor(.red)
+                            .padding()
+                    }
+                    
+                    HStack {
                         Spacer()
                         Text("Forgot Password")
                             .font(.subheadline)
-                            .foregroundStyle(.accent)
+                            .foregroundColor(Color.accentColor)
                     }
-                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                    .frame(maxWidth: .infinity)
                     
                     Spacer()
                     
-                    Text("Apple collects your data in app, which is not associated with your Apple ID, in order to improve and personalise the App.")
-                        .font(.caption)
-                        .foregroundStyle(.textSecondaryColors)
-                
+                    Text("Apple collects your data in app, which is not associated with your Apple ID, in order to improve and personalise the App.")
+                        .font(.caption2)
+                        .foregroundColor(Color.secondary)
                 }
-                
             }
-//            .safeAreaPadding()
-            
-            
-//            .background(.black)
-//            .shadow(color: .accent, radius: 50 , x: 0, y: 0)
+            .padding(.horizontal)
         }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-//        .edgesIgnoringSafeArea(.all)
-        .padding(.horizontal)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    private func login(email: String, password: String) {
+        let tokenResponse = UserManager.shared.loginUser(email: email, password: password) { result in
+            print(result)
+            switch result {
+            case .success(let userRes):
+                if userRes.success {
+                    // Handle successful login
+                    //                    authToken =
+                    print("Login successful: \(userRes.user)")
+                    
+                } else {
+                    // Handle unsuccessful login
+                    self.loginError = userRes.message
+                }
+            case .failure(let error):
+                // Handle error
+                self.loginError = error.localizedDescription
+            }
+        }
+        
+        guard let TokenResp = tokenResponse else {
+            return
+        }
+        
+        if TokenResp.token != "" {
+            
+        }
     }
 }
 
-#Preview {
-    Login()
+struct Login_Previews: PreviewProvider {
+    static var previews: some View {
+        Login()
+    }
 }

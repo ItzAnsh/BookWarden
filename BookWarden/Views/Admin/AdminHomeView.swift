@@ -7,9 +7,27 @@
 
 import SwiftUI
 
+enum AdminTabs {
+    case Stats
+    case Libraries
+}
+
 struct AdminHomeView: View {
+    @State private var selection: AdminTabs = .Libraries
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            TabView(selection: $selection) {
+                AdminLibrariesView()
+                    .tabItem{Label("Libraries", systemImage: "book.fill")}
+                    .tag(AdminTabs.Libraries)
+                
+                AdminStatsView()
+                    .tabItem {
+                        Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
+                    }
+                
+            }
+        }
     }
 }
 
