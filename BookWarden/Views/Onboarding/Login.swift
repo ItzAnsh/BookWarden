@@ -72,7 +72,7 @@ struct Login: View {
                             }
                         }
                         .padding()
-                        .background(colorScheme == .light ? Color.white : Color(UIColor.systemGray6))
+                        .background(colorScheme == .light ? Color.white : Color(.systemGray6))
                         .cornerRadius(12)
                     }
                     
@@ -82,7 +82,7 @@ struct Login: View {
                         Text("Login")
                             .font(.title3)
                             .fontWeight(.bold)
-                            .foregroundColor(Color.white)
+                            .foregroundColor(colorScheme == .light ? .white : .black)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
                             .background(Color.accentColor)
