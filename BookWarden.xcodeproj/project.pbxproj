@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F2214612C11899D000C07BE /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2214602C11899D000C07BE /* PasswordChangeView.swift */; };
+		3F2214632C11CE3D000C07BE /* PasswordChangeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2214622C11CE3D000C07BE /* PasswordChangeViewModel.swift */; };
 		4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E20C82BFDB3670023B910 /* BookWardenApp.swift */; };
 		4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E20CA2BFDB3670023B910 /* ContentView.swift */; };
 		4D1E20CD2BFDB3690023B910 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D1E20CC2BFDB3690023B910 /* Assets.xcassets */; };
@@ -80,6 +82,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F2214602C11899D000C07BE /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
+		3F2214622C11CE3D000C07BE /* PasswordChangeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeViewModel.swift; sourceTree = "<group>"; };
 		4D1E20C52BFDB3670023B910 /* BookWarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookWarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D1E20C82BFDB3670023B910 /* BookWardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookWardenApp.swift; sourceTree = "<group>"; };
 		4D1E20CA2BFDB3670023B910 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -437,6 +441,8 @@
 				4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */,
 				4DCD0F772C0F82AD003CB23F /* FinesView.swift */,
 				4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */,
+				3F2214602C11899D000C07BE /* PasswordChangeView.swift */,
+				3F2214622C11CE3D000C07BE /* PasswordChangeViewModel.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -582,10 +588,12 @@
 				4D8F43102C05EC4F00B3F342 /* HomeDeadlineCard.swift in Sources */,
 				4DCD0F6A2C0DAE2F003CB23F /* AdminLibrariesView.swift in Sources */,
 				4D2040EA2C08DCCE004FC6B9 /* WishListCardView.swift in Sources */,
+				3F2214632C11CE3D000C07BE /* PasswordChangeViewModel.swift in Sources */,
 				4D5ADAB32C04F776002EAC6A /* UserWishlistView.swift in Sources */,
 				4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */,
 				4D2040CF2C064542004FC6B9 /* UserRecommendationView.swift in Sources */,
 				4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */,
+				3F2214612C11899D000C07BE /* PasswordChangeView.swift in Sources */,
 				4D2041062C0A31B2004FC6B9 /* Genre.swift in Sources */,
 				4DCD0F672C0D1372003CB23F /* BookDescriptionView.swift in Sources */,
 				4D5ADAB02C04F709002EAC6A /* UserLibraryView.swift in Sources */,
