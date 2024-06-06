@@ -1,7 +1,6 @@
 import SwiftUI
 
 enum Field {
-    
     case password
     case emailAddress
 }
@@ -9,16 +8,13 @@ enum Field {
 struct Login: View {
     @State private var email = ""
     @State private var password = ""
+    @State private var showAlert = false // Control variable for showing alert
+    @State private var alertMessage = "" // Message for the alert
     @State private var loginError: String?
     
     @FocusState private var focusedField: Field?
     
     @Environment(\.colorScheme) var colorScheme
-    
-//    @AppStorage("authToken") private var authToken = ""
-//    @State private var accessToken: String = ""
-    
-//    @State private var authToken: String = ""
     
     var body: some View {
         VStack {
@@ -56,6 +52,7 @@ struct Login: View {
                                     .submitLabel(.next)
                                     .padding(.vertical, 1)
                                     .font(.subheadline)
+                                    .autocorrectionDisabled(true)
                             }
                             Divider()
                             HStack {
@@ -77,7 +74,13 @@ struct Login: View {
                     }
                     
                     Button(action: {
-                        login(email: email, password: password)
+                        if email.isEmpty || password.isEmpty {
+                            // Show alert if either email or password is empty
+                            showAlert = true
+                            alertMessage = "Please enter both email and password."
+                        } else {
+                            login(email: email, password: password)
+                        }
                     }) {
                         Text("Login")
                             .font(.title3)
@@ -113,6 +116,10 @@ struct Login: View {
             .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        // Show alert if showAlert is true
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Invalid Input"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     private func login(email: String, password: String) {
