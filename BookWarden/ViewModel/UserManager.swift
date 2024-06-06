@@ -23,7 +23,10 @@ struct TokenResponse: Decodable {
     var role: String
 }
 
+//@AppStorage("authToken") var authToken: String = ""
+
 class UserManager: ObservableObject {
+    private init() {}
     static let shared = UserManager()
     
     @Published private(set) var user: User?
@@ -72,6 +75,9 @@ class UserManager: ObservableObject {
                         tokenResponse.role = resData.role
                         tokenResponse.token = resData.token
                         self.role = resData.role
+                        UserDefaults.standard.set(resData.token, forKey: "authToken")
+                        UserDefaults.standard.set(resData.role, forKey: "role")
+                        
                         return
                     }
                 } catch {
@@ -84,7 +90,7 @@ class UserManager: ObservableObject {
     }
 }
 
-var userManager = UserManager.shared
+//var userManager = UserManager.shared
 
 
 

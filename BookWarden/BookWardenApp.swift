@@ -10,22 +10,30 @@ enum UserTypeForApp {
 struct BookWardenApp: App {
     @AppStorage("isOnboarding") var isOnboarding: Bool = false
     @AppStorage("authToken") var authToken: String = ""
+    @AppStorage("isDarkMode") private var isDarkMode = false
     
     @ObservedObject var userManager = UserManager.shared
     var userType: UserTypeForApp = .member
     
     var body: some Scene {
         WindowGroup {
-            if userManager.accessToken != "" {
-                if userManager.role == "user" {
+            if userManager.accessToken != "" || UserDefaults.standard.string(forKey: "accessToken") != "" {
+                if userManager.role == "user" || UserDefaults.standard.string(forKey: "role") == "user" {
                     UserView()
-                } else if userManager.role == "librarian" {
+                        .preferredColorScheme(isDarkMode ? .dark : .light)
+                } else if userManager.role == "librarian" || UserDefaults.standard.string(forKey: "role") == "librarian"  {
                     LibrarianView()
-                } else if userManager.role == "admin" {
+                        .preferredColorScheme(isDarkMode ? .dark : .light)
+                } else if userManager.role == "admin" || UserDefaults.standard.string(forKey: "role") == "admin" {
                     AdminHomeView()
+                        .preferredColorScheme(isDarkMode ? .dark : .light)
+                } else {
+                    Login()
+                        .preferredColorScheme(isDarkMode ? .dark : .light)
                 }
             } else {
                 Login()
+                    .preferredColorScheme(isDarkMode ? .dark : .light)
             }
         }
     }

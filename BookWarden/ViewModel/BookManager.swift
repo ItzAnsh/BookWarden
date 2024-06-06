@@ -83,7 +83,7 @@ class BookManager: ObservableObject {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken")!)", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {

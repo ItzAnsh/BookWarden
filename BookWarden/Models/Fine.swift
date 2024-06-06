@@ -89,11 +89,11 @@ class APIClient2 {
 
 struct Fine: Codable, Hashable {
     let id: String
-    let issueId: String
+    let issueId: Issue
     let amount: Double
     var status: FineStatus
     let category: FineCategory
-    var interest: Double?
+    var interest: Double
     var transactionId: String?
     
     enum CodingKeys: String, CodingKey {
@@ -127,7 +127,7 @@ struct Fine: Codable, Hashable {
         }
         
         let bookManager = BookManager.shared
-        guard let book = bookManager.getBook(byId: issue.getBookId()) else {
+        guard let book = bookManager.getBook(byId: issue.getBookId().id) else {
             completion(.failure(FineInitializationError.bookDetailsNotFound))
             return
         }

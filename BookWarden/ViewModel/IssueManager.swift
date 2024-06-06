@@ -38,72 +38,72 @@ class IssueManager {
         }
     }
     
-    func fetchIssues(accessToken: String, completion: @escaping (Result<[Issue], Error>) -> Void) {
-        guard let url = URL(string: "https://your-api-url.com/issues") else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                completion(.failure(NetworkError.invalidResponse))
-                return
-            }
-            guard let data = data else {
-                completion(.failure(NetworkError.noData))
-                return
-            }
-            do {
-                let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
-                let issues = jsonArray?.compactMap { dict -> Issue? in
-                    guard let id = dict["_id"] as? String,
-                          let bookId = dict["bookId"] as? String,
-                          let userId = dict["userId"] as? String,
-                          let issuedDateString = dict["issuedDate"] as? String,
-                          let deadlineString = dict["deadline"] as? String,
-                          let statusString = dict["status"] as? String,
-                          let issuedDate = ISO8601DateFormatter().date(from: issuedDateString),
-                          let deadline = ISO8601DateFormatter().date(from: deadlineString),
-                          let status = IssueStatus(rawValue: statusString) else {
-                        return nil
-                    }
-                    
-                    let returnDate: Date? = {
-                        if let returnDateString = dict["returnDate"] as? String {
-                            return ISO8601DateFormatter().date(from: returnDateString)
-                        }
-                        return nil
-                    }()
-                    
-                    return Issue(id: id,
-                                 bookId: bookId,
-                                 userId: userId,
-                                 issuedDate: issuedDate,
-                                 deadline: deadline,
-                                 status: status,
-                                 returnDate: returnDate)
-                }
-                DispatchQueue.main.async {
-                    guard let issues = issues else {
-                        completion(.failure(NetworkError.noData))
-                        return
-                    }
-                    self.issues = issues
-                    completion(.success(issues))
-                }
-            } catch {
-                completion(.failure(error))
-            }
-        }.resume()
-    }
+//    func fetchIssues(accessToken: String, completion: @escaping (Result<[Issue], Error>) -> Void) {
+//        guard let url = URL(string: "https://your-api-url.com/issues") else {
+//            completion(.failure(NetworkError.invalidURL))
+//            return
+//        }
+//        
+//        var urlRequest = URLRequest(url: url)
+//        urlRequest.httpMethod = "GET"
+//        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+//        
+//        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+//                completion(.failure(NetworkError.invalidResponse))
+//                return
+//            }
+//            guard let data = data else {
+//                completion(.failure(NetworkError.noData))
+//                return
+//            }
+//            do {
+//                let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
+//                let issues = jsonArray?.compactMap { dict -> Issue? in
+//                    guard let id = dict["_id"] as? String,
+//                          let bookId = dict["bookId"] as? String,
+//                          let userId = dict["userId"] as? String,
+//                          let issuedDateString = dict["issuedDate"] as? String,
+//                          let deadlineString = dict["deadline"] as? String,
+//                          let statusString = dict["status"] as? String,
+//                          let issuedDate = ISO8601DateFormatter().date(from: issuedDateString),
+//                          let deadline = ISO8601DateFormatter().date(from: deadlineString),
+//                          let status = IssueStatus(rawValue: statusString) else {
+//                        return nil
+//                    }
+//                    
+//                    let returnDate: Date? = {
+//                        if let returnDateString = dict["returnDate"] as? String {
+//                            return ISO8601DateFormatter().date(from: returnDateString)
+//                        }
+//                        return nil
+//                    }()
+//                    
+//                    return Issue(id: id,
+//                                 bookId: bookId,
+//                                 userId: userId,
+//                                 issuedDate: issuedDate,
+//                                 deadline: deadline,
+//                                 status: status,
+//                                 returnDate: returnDate)
+//                }
+//                DispatchQueue.main.async {
+//                    guard let issues = issues else {
+//                        completion(.failure(NetworkError.noData))
+//                        return
+//                    }
+//                    self.issues = issues
+//                    completion(.success(issues))
+//                }
+//            } catch {
+//                completion(.failure(error))
+//            }
+//        }.resume()
+//    }
     
     private func saveIssueToBackend(_ issue: Issue, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
             guard let url = URL(string: "https://your-api-url.com/saveIssue") else {

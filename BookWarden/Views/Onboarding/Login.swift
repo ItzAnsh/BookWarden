@@ -1,4 +1,5 @@
 import SwiftUI
+//import KeychainAccess
 
 enum Field {
     
@@ -10,6 +11,7 @@ struct Login: View {
     @State private var email = ""
     @State private var password = ""
     @State private var loginError: String?
+//    let text = KeyChainWrapper.standard.string(forKey: "authToken") ?? ""
     
     @FocusState private var focusedField: Field?
     

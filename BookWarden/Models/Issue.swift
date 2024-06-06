@@ -10,14 +10,14 @@ import Foundation
 
 struct Issue: Codable, Hashable {
     private let id: String
-    private let bookId: String
+    private let bookId: Book
     private let userId: String
     private let issuedDate: Date
     private let deadline: Date
     private var status: IssueStatus
     private var returnDate: Date?
     
-    init(id: String, bookId: String, userId: String, issuedDate: Date, deadline: Date, status: IssueStatus, returnDate: Date? = nil) {
+    init(id: String, bookId: Book, userId: String, issuedDate: Date, deadline: Date, status: IssueStatus, returnDate: Date? = nil) {
         self.id = id
         self.bookId = bookId
         self.userId = userId
@@ -29,7 +29,7 @@ struct Issue: Codable, Hashable {
     
     // Getters
     func getId() -> String { return id }
-    func getBookId() -> String { return bookId }
+    func getBookId() -> Book { return bookId }
     func getUserId() -> String { return userId }
     func getIssuedDate() -> Date { return issuedDate }
     func getDeadline() -> Date { return deadline }

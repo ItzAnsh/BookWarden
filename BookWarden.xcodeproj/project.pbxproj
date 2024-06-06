@@ -56,6 +56,10 @@
 		4DCD0F6D2C0DAF23003CB23F /* SingleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F6C2C0DAF23003CB23F /* SingleLibraryView.swift */; };
 		4DCD0F6F2C0DB4F0003CB23F /* AdminStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F6E2C0DB4F0003CB23F /* AdminStatsView.swift */; };
 		4DCD0F712C0DB869003CB23F /* AdminAddLibrarySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F702C0DB869003CB23F /* AdminAddLibrarySubView.swift */; };
+		4DCD0F742C0F825C003CB23F /* IssuedBooksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F732C0F825C003CB23F /* IssuedBooksView.swift */; };
+		4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */; };
+		4DCD0F782C0F82AD003CB23F /* FinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F772C0F82AD003CB23F /* FinesView.swift */; };
+		4DCD0F7A2C0F82DE003CB23F /* BookFineCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +132,10 @@
 		4DCD0F6C2C0DAF23003CB23F /* SingleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLibraryView.swift; sourceTree = "<group>"; };
 		4DCD0F6E2C0DB4F0003CB23F /* AdminStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminStatsView.swift; sourceTree = "<group>"; };
 		4DCD0F702C0DB869003CB23F /* AdminAddLibrarySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminAddLibrarySubView.swift; sourceTree = "<group>"; };
+		4DCD0F732C0F825C003CB23F /* IssuedBooksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuedBooksView.swift; sourceTree = "<group>"; };
+		4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuedBooksSSView.swift; sourceTree = "<group>"; };
+		4DCD0F772C0F82AD003CB23F /* FinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinesView.swift; sourceTree = "<group>"; };
+		4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFineCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +397,7 @@
 		4D5ADAB42C04F80D002EAC6A /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				4DCD0F722C0F8225003CB23F /* SubViews */,
 				4D5ADAB52C04F819002EAC6A /* UserProfileView.swift */,
 			);
 			path = Profile;
@@ -419,6 +428,17 @@
 				4DCD0F6C2C0DAF23003CB23F /* SingleLibraryView.swift */,
 			);
 			path = SubComponents;
+			sourceTree = "<group>";
+		};
+		4DCD0F722C0F8225003CB23F /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				4DCD0F732C0F825C003CB23F /* IssuedBooksView.swift */,
+				4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */,
+				4DCD0F772C0F82AD003CB23F /* FinesView.swift */,
+				4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */,
+			);
+			path = SubViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -565,11 +585,13 @@
 				4D5ADAB32C04F776002EAC6A /* UserWishlistView.swift in Sources */,
 				4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */,
 				4D2040CF2C064542004FC6B9 /* UserRecommendationView.swift in Sources */,
+				4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */,
 				4D2041062C0A31B2004FC6B9 /* Genre.swift in Sources */,
 				4DCD0F672C0D1372003CB23F /* BookDescriptionView.swift in Sources */,
 				4D5ADAB02C04F709002EAC6A /* UserLibraryView.swift in Sources */,
 				4D5ADAB62C04F819002EAC6A /* UserProfileView.swift in Sources */,
 				4D5ADAA82C04F0B1002EAC6A /* UserHomeView.swift in Sources */,
+				4DCD0F7A2C0F82DE003CB23F /* BookFineCard.swift in Sources */,
 				4D2040D22C065BFE004FC6B9 /* CategoryComponent.swift in Sources */,
 				4D2040E32C0798CA004FC6B9 /* CategorySubView.swift in Sources */,
 				4D2040ED2C08E516004FC6B9 /* Login.swift in Sources */,
@@ -587,11 +609,13 @@
 				4D2040F42C09E59C004FC6B9 /* LibrarianCatalogueView.swift in Sources */,
 				4D2040F82C09F1DF004FC6B9 /* CatalogueSingleBookSubView.swift in Sources */,
 				4DCD0F6F2C0DB4F0003CB23F /* AdminStatsView.swift in Sources */,
+				4DCD0F742C0F825C003CB23F /* IssuedBooksView.swift in Sources */,
 				4D2041132C0B849E004FC6B9 /* BookManager.swift in Sources */,
 				4D2040F62C09E6D8004FC6B9 /* LibrarianUsersView.swift in Sources */,
 				4D20410A2C0A3308004FC6B9 /* Library.swift in Sources */,
 				4D2040D42C0716B4004FC6B9 /* UserHomeGenresSubView.swift in Sources */,
 				4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */,
+				4DCD0F782C0F82AD003CB23F /* FinesView.swift in Sources */,
 				4D20410D2C0B678B004FC6B9 /* LibraryManager.swift in Sources */,
 				4DCD0F6D2C0DAF23003CB23F /* SingleLibraryView.swift in Sources */,
 				4D2041152C0B84F4004FC6B9 /* WishlistManager.swift in Sources */,
@@ -758,7 +782,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BookWarden/Preview Content\"";
-				DEVELOPMENT_TEAM = QBN2C95DWR;
+				DEVELOPMENT_TEAM = 7GVS3WCNXX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -771,7 +795,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Prabal.BookWarden;
+				PRODUCT_BUNDLE_IDENTIFIER = AnshBhasin.BookWarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -787,7 +811,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BookWarden/Preview Content\"";
-				DEVELOPMENT_TEAM = QBN2C95DWR;
+				DEVELOPMENT_TEAM = 7GVS3WCNXX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -800,7 +824,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Prabal.BookWarden;
+				PRODUCT_BUNDLE_IDENTIFIER = AnshBhasin.BookWarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
