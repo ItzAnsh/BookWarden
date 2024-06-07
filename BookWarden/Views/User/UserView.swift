@@ -16,6 +16,7 @@ enum UserTab {
 
 
 struct UserView: View {
+    
     @State private var selection: UserTab = .Home
     var body: some View {
         TabView(selection: $selection) {

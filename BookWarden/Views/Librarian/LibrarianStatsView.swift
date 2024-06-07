@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct LibrarianHomeView: View {
+struct LibrarianStatsView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Ansh")
     }
 }
 
 #Preview {
-    LibrarianHomeView()
+    LibrarianStatsView()
 }
