@@ -37,6 +37,7 @@ struct AdminEditLibrarySubView: View {
                 Section(header: Text("Contact Details")) {
                     TextField("Library Email", text: $contactEmail)
                         .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
                     TextField("Library Contact Number", text: $contactNo)
                         .keyboardType(.numberPad)
                 }
@@ -78,6 +79,7 @@ struct AdminEditLibrarySubView: View {
                 Section(header: Text("Librarian")) {
                     TextField("Enter Librarian Email", text: $librarianEmail)
                         .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
                 }
             }
             .toolbar {

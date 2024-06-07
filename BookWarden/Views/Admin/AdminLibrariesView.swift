@@ -5,11 +5,21 @@ struct AdminLibrariesView: View {
     @State var modalState: Bool = false
     @StateObject var libraryManager = LibraryManager.shared
     
+    var filteredLibraries: [Library] {
+        if searchText.isEmpty {
+            return libraryManager.libraries
+        } else {
+            return libraryManager.libraries.filter { library in
+                library.getName().localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 10) {
-                    ForEach(libraryManager.libraries) { library in
+                    ForEach(filteredLibraries) { library in
                         SingleLibraryView(id: library.getId(), title: library.getName(), location: library.getLocation(), contactNo: library.getContactNo(),contactEmail: library.getContactEmail(),issuePeriod: library.getIssuePeriod(),maxBooks: library.getMaxBooks(),fineInterest: library.getFineInterest(), librarianEmail: library.getLibrarian().getEmail())
                     }
                 }

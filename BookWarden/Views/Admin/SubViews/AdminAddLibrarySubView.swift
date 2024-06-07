@@ -34,6 +34,7 @@ struct AdminAddLibrarySubView: View {
                 Section(header: Text("Contact Details")) {
                     TextField("Library Email", text: $contactEmail)
                         .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
                     TextField("Library Contact Number", text: $contactNo)
                         .keyboardType(.numberPad)
                 }
@@ -66,6 +67,7 @@ struct AdminAddLibrarySubView: View {
                 Section(header: Text("Librarian")) {
                     TextField("Enter Librarian Email", text: $librarianEmail)
                         .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
                 }
             }
             .toolbar {
@@ -89,7 +91,7 @@ struct AdminAddLibrarySubView: View {
             }
             .toolbarBackground(Color(.systemGray6))
             .toolbarBackground(.visible)
-            .navigationTitle("Library Details")
+            .navigationTitle("Add Library Details")
             .navigationBarTitleDisplayMode(.inline)
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
