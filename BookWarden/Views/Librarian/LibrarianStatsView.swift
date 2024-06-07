@@ -9,7 +9,8 @@ import SwiftUI
 
 struct LibrarianStatsView: View {
     var body: some View {
-        Text("Ansh")
+        //        Text("Ansh")
+        QRScannerView()
     }
 }
 
