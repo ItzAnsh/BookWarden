@@ -134,11 +134,15 @@ class LibraryManager: ObservableObject {
                           let issuePeriod = dict["issuePeriod"] as? Int,
                           let maxBooks = dict["maxBooks"] as? Int,
                           let fineInterest = dict["fineInterest"] as? Int,
-                          let librarianId = dict["librarian"] as? String else {
+                          let librarianDict = dict["librarian"] as? [String: Any],
+                          let librarianId = librarianDict["_id"] as? String,
+                          let librarianName = librarianDict["name"] as? String,
+                          let librarianEmail = librarianDict["email"] as? String
+                    else {
                         return nil
                     }
-                    print("\(id) \(name) \(location) \(contactNo) \(contactEmail) \(librarianId)")
-                    let librarian = User(id: librarianId, name: "", email: "", contactNo: "", genrePreferences: [], roles: .librarian)
+//                    print("\(id) \(name) \(location) \(contactNo) \(contactEmail) \(librarianId)")
+                    let librarian = User(id: librarianId, name: librarianName, email: librarianEmail, contactNo: "", genrePreferences: [], roles: .librarian)
                     
                     return Library(id: id,
                                    name: name,

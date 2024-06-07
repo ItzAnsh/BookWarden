@@ -14,7 +14,6 @@ struct AdminLibrariesView: View {
             }
         }
     }
-
     var body: some View {
         NavigationStack {
             ScrollView {

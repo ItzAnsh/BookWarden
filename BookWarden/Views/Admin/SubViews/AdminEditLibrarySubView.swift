@@ -21,6 +21,7 @@ struct AdminEditLibrarySubView: View {
     @Environment(\.presentationMode) var presentationMode
     @StateObject var libraryManager = LibraryManager.shared
     @State private var showAlert = false
+    @State private var emailAlert = false
     @State private var alertMessage = ""
     
     
@@ -94,7 +95,12 @@ struct AdminEditLibrarySubView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        saveLibrary()
+                        if isValidEmail(contactEmail) && isValidEmail(librarianEmail){
+                            saveLibrary()
+                        }
+                        else{
+                            emailAlert = true
+                        }
                     }) {
                         Text("Done")
                     }
@@ -107,6 +113,9 @@ struct AdminEditLibrarySubView: View {
             .navigationBarTitleDisplayMode(.inline)
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
+            .alert(isPresented: $emailAlert) {
+                Alert(title: Text("Invalid Email"),message: Text("Please enter a valid email address."),dismissButton: .default(Text("OK")))
             }
         }
     }
@@ -125,5 +134,11 @@ struct AdminEditLibrarySubView: View {
                 alertMessage = error.localizedDescription
             }
         }
+    }
+    
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: email)
     }
 }
