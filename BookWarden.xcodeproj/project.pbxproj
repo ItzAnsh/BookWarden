@@ -51,6 +51,12 @@
 		4D5ADAB62C04F819002EAC6A /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ADAB52C04F819002EAC6A /* UserProfileView.swift */; };
 		4D8F430D2C05E92A00B3F342 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F430C2C05E92A00B3F342 /* UserView.swift */; };
 		4D8F43102C05EC4F00B3F342 /* HomeDeadlineCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F430F2C05EC4F00B3F342 /* HomeDeadlineCard.swift */; };
+		4DA27A8B2C11B01500AE9055 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A8A2C11B01500AE9055 /* UserDetailView.swift */; };
+		4DA27A8D2C11B06C00AE9055 /* IssuedBooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A8C2C11B06C00AE9055 /* IssuedBooks.swift */; };
+		4DA27A8F2C11B08700AE9055 /* IssuedBooksCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A8E2C11B08700AE9055 /* IssuedBooksCard.swift */; };
+		4DA27A912C11B0AB00AE9055 /* UserFinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */; };
+		4DA27A932C11B0D800AE9055 /* FinesViewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A922C11B0D800AE9055 /* FinesViewCard.swift */; };
+		4DA27A952C124E9600AE9055 /* AddBookModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A942C124E9600AE9055 /* AddBookModalView.swift */; };
 		4DCD0F672C0D1372003CB23F /* BookDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F662C0D1372003CB23F /* BookDescriptionView.swift */; };
 		4DCD0F6A2C0DAE2F003CB23F /* AdminLibrariesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F692C0DAE2F003CB23F /* AdminLibrariesView.swift */; };
 		4DCD0F6D2C0DAF23003CB23F /* SingleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F6C2C0DAF23003CB23F /* SingleLibraryView.swift */; };
@@ -127,6 +133,12 @@
 		4D5ADAB52C04F819002EAC6A /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		4D8F430C2C05E92A00B3F342 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		4D8F430F2C05EC4F00B3F342 /* HomeDeadlineCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDeadlineCard.swift; sourceTree = "<group>"; };
+		4DA27A8A2C11B01500AE9055 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
+		4DA27A8C2C11B06C00AE9055 /* IssuedBooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuedBooks.swift; sourceTree = "<group>"; };
+		4DA27A8E2C11B08700AE9055 /* IssuedBooksCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuedBooksCard.swift; sourceTree = "<group>"; };
+		4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFinesView.swift; sourceTree = "<group>"; };
+		4DA27A922C11B0D800AE9055 /* FinesViewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinesViewCard.swift; sourceTree = "<group>"; };
+		4DA27A942C124E9600AE9055 /* AddBookModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookModalView.swift; sourceTree = "<group>"; };
 		4DCD0F662C0D1372003CB23F /* BookDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDescriptionView.swift; sourceTree = "<group>"; };
 		4DCD0F692C0DAE2F003CB23F /* AdminLibrariesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminLibrariesView.swift; sourceTree = "<group>"; };
 		4DCD0F6C2C0DAF23003CB23F /* SingleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLibraryView.swift; sourceTree = "<group>"; };
@@ -285,6 +297,10 @@
 		4D2040F02C09E528004FC6B9 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				4DA27A8A2C11B01500AE9055 /* UserDetailView.swift */,
+				4DA27A8C2C11B06C00AE9055 /* IssuedBooks.swift */,
+				4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */,
+				4DA27A942C124E9600AE9055 /* AddBookModalView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -292,6 +308,8 @@
 		4D2040F12C09E532004FC6B9 /* SubComponents */ = {
 			isa = PBXGroup;
 			children = (
+				4DA27A8E2C11B08700AE9055 /* IssuedBooksCard.swift */,
+				4DA27A922C11B0D800AE9055 /* FinesViewCard.swift */,
 			);
 			path = SubComponents;
 			sourceTree = "<group>";
@@ -584,6 +602,7 @@
 				4D2040EA2C08DCCE004FC6B9 /* WishListCardView.swift in Sources */,
 				4D5ADAB32C04F776002EAC6A /* UserWishlistView.swift in Sources */,
 				4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */,
+				4DA27A8D2C11B06C00AE9055 /* IssuedBooks.swift in Sources */,
 				4D2040CF2C064542004FC6B9 /* UserRecommendationView.swift in Sources */,
 				4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */,
 				4D2041062C0A31B2004FC6B9 /* Genre.swift in Sources */,
@@ -593,9 +612,12 @@
 				4D5ADAA82C04F0B1002EAC6A /* UserHomeView.swift in Sources */,
 				4DCD0F7A2C0F82DE003CB23F /* BookFineCard.swift in Sources */,
 				4D2040D22C065BFE004FC6B9 /* CategoryComponent.swift in Sources */,
+				4DA27A952C124E9600AE9055 /* AddBookModalView.swift in Sources */,
+				4DA27A932C11B0D800AE9055 /* FinesViewCard.swift in Sources */,
 				4D2040E32C0798CA004FC6B9 /* CategorySubView.swift in Sources */,
 				4D2040ED2C08E516004FC6B9 /* Login.swift in Sources */,
 				4D2040FA2C09FDFB004FC6B9 /* LibrarianRequestsView.swift in Sources */,
+				4DA27A8B2C11B01500AE9055 /* UserDetailView.swift in Sources */,
 				4D2040D62C071818004FC6B9 /* TitleComponent.swift in Sources */,
 				4D2041002C0A3106004FC6B9 /* Fine.swift in Sources */,
 				4D2041042C0A3146004FC6B9 /* Book.swift in Sources */,
@@ -603,6 +625,7 @@
 				4DCD0F712C0DB869003CB23F /* AdminAddLibrarySubView.swift in Sources */,
 				4D5ADAAC2C04F0D2002EAC6A /* AdminHomeView.swift in Sources */,
 				4D5ADAAA2C04F0C5002EAC6A /* LibrarianStatsView.swift in Sources */,
+				4DA27A912C11B0AB00AE9055 /* UserFinesView.swift in Sources */,
 				4D2040D82C0718E2004FC6B9 /* ArrivalCardsSubView.swift in Sources */,
 				4D20410F2C0B8421004FC6B9 /* IssueManager.swift in Sources */,
 				4D8F430D2C05E92A00B3F342 /* UserView.swift in Sources */,
@@ -613,6 +636,7 @@
 				4D2041132C0B849E004FC6B9 /* BookManager.swift in Sources */,
 				4D2040F62C09E6D8004FC6B9 /* LibrarianUsersView.swift in Sources */,
 				4D20410A2C0A3308004FC6B9 /* Library.swift in Sources */,
+				4DA27A8F2C11B08700AE9055 /* IssuedBooksCard.swift in Sources */,
 				4D2040D42C0716B4004FC6B9 /* UserHomeGenresSubView.swift in Sources */,
 				4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */,
 				4DCD0F782C0F82AD003CB23F /* FinesView.swift in Sources */,

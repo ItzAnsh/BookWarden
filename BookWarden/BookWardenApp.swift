@@ -17,25 +17,29 @@ struct BookWardenApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if userManager.accessToken != "" || UserDefaults.standard.string(forKey: "accessToken") != "" {
-                if userManager.role == "user" || UserDefaults.standard.string(forKey: "role") == "user" {
-                    UserView()
-                        .preferredColorScheme(isDarkMode ? .dark : .light)
-                } else if userManager.role == "librarian" || UserDefaults.standard.string(forKey: "role") == "librarian"  {
-                    LibrarianView()
-                        .preferredColorScheme(isDarkMode ? .dark : .light)
-                } else if userManager.role == "admin" || UserDefaults.standard.string(forKey: "role") == "admin" {
-                    AdminHomeView()
-                        .preferredColorScheme(isDarkMode ? .dark : .light)
+            VStack {
+                if userManager.accessToken != "" || UserDefaults.standard.string(forKey: "accessToken") != "" {
+                    if userManager.role == "user" || UserDefaults.standard.string(forKey: "role") == "user" {
+                        UserView()
+//                            .preferredColorScheme(isDarkMode ? .dark : .light)
+                    } else if userManager.role == "librarian" || UserDefaults.standard.string(forKey: "role") == "librarian"  {
+                        LibrarianView()
+//                            .preferredColorScheme(isDarkMode ? .dark : .light)
+                    } else if userManager.role == "admin" || UserDefaults.standard.string(forKey: "role") == "admin" {
+                        AdminHomeView()
+//                            .preferredColorScheme(isDarkMode ? .dark : .light)
+                    } else {
+                        Login()
+//                            .preferredColorScheme(isDarkMode ? .dark : .light)
+                    }
                 } else {
                     Login()
-                        .preferredColorScheme(isDarkMode ? .dark : .light)
+//                        .preferredColorScheme(isDarkMode ? .dark : .light)
                 }
-            } else {
-                Login()
-                    .preferredColorScheme(isDarkMode ? .dark : .light)
             }
+//            .preferredColorScheme(isDarkMode ? .dark : .light)
         }
+        
     }
     
     private func endEditing() {

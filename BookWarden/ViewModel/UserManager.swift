@@ -23,16 +23,28 @@ struct TokenResponse: Decodable {
     var role: String
 }
 
+struct AllUserResponse: Codable, Hashable {
+    let _id: String
+    let name: String
+    let email: String
+    let password: String
+    let role: String
+    let date: String
+}
+
 //@AppStorage("authToken") var authToken: String = ""
 
 class UserManager: ObservableObject {
-    private init() {}
+    private init() {
+        //        self.accessToken = UserDefaults.standard.string(forKey: "accessToken")
+    }
     static let shared = UserManager()
     
     @Published private(set) var user: User?
     
-    @Published var accessToken = ""
+    @Published var accessToken: String = ""
     @Published var role = ""
+    @Published var allUsers: [AllUserResponse] = []
     
     func loginUser(email: String, password: String, completion: @escaping (Result<UserRes, Error>) -> Void) -> TokenResponse? {
         guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/login") else {
@@ -71,7 +83,7 @@ class UserManager: ObservableObject {
                     print("\(type(of: resData.token)) \(resData.token)")
                     DispatchQueue.main.async {
                         self.accessToken = resData.token
-//                        let NewResponse = TokenResponse(token: resData.token, role: resData.role)
+                        //                        let NewResponse = TokenResponse(token: resData.token, role: resData.role)
                         tokenResponse.role = resData.role
                         tokenResponse.token = resData.token
                         self.role = resData.role
@@ -87,6 +99,53 @@ class UserManager: ObservableObject {
         }.resume()
         
         return tokenResponse
+    }
+    
+    func fetchAllUsers() {
+        
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/getAllUsers") else {
+            print("Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // Add authorization token to the request header
+        let token = UserDefaults.standard.string(forKey: "authToken")!
+        print(token)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Error fetching data: \(String(describing: error))")
+                return
+            }
+            
+            print(data)
+            
+            // Check response status code
+            if let httpResponse = response as? HTTPURLResponse {
+                if !(200...299).contains(httpResponse.statusCode) {
+                    print("Error: HTTP status code \(httpResponse.statusCode)")
+                    return
+                }
+            }
+            
+            do {
+                let users = try JSONDecoder().decode([AllUserResponse].self, from: data)
+                DispatchQueue.main.async {
+                    self.allUsers = users
+                    print("Users fetched and updated: \(self.allUsers)")
+                }
+            } catch {
+                print("Error decoding data: \(error)")
+            }
+        }
+        
+        task.resume()
+        
+        
     }
 }
 

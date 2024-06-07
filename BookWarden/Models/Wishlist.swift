@@ -25,9 +25,7 @@ struct Wishlist: Codable, Hashable {
     }
     
     // Remove a book from the wishlist by id
-    mutating func removeBook(byId bookId: String) {
-//        books.removeAll { $0.getId() == bookId }
-    }
+   
 }
 
 
