@@ -74,7 +74,7 @@ class BookManager: ObservableObject {
             completion(.success(responseData))
         }.resume()
     }
-
+    
     func fetchBooks(accessToken: String, completion: @escaping (Result<[Book], Error>) -> Void) {
         guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/getBooks") else {
             completion(.failure(NetworkError.invalidURL))
@@ -114,7 +114,11 @@ class BookManager: ObservableObject {
                               let language = dict["language"] as? String,
                               let length = dict["length"] as? Int,
                               let imageURLString = dict["imageURL"] as? String,
-                              let imageURL = URL(string: imageURLString) else {
+                              let imageURL = URL(string: imageURLString),
+                              let isbn10 = dict["isbn10"] as? String,
+                              let isbn13 = dict["isbn13"] as? String,
+                              let v = dict["__v"] as? String
+                        else {
                             return nil
                         }
                         
@@ -122,12 +126,16 @@ class BookManager: ObservableObject {
                                     title: title,
                                     author: author,
                                     description: description,
-                                    genre: genre,
+                                    genre: Genre(id: "idd", name: "Horro", v: 0),
                                     price: price,
                                     publisher: publisher,
                                     language: language,
                                     length: length,
-                                    imageURL: imageURL)
+                                    imageURL: imageURL,
+                                    isbn10: isbn10,
+                                    isbn13: isbn13,
+                                    v: 0
+                        )
                     }
                     
                     DispatchQueue.main.async {
@@ -142,6 +150,32 @@ class BookManager: ObservableObject {
             }
         }.resume()
     }
+    func parseBook (bookDictionary : [String : Any]) -> Book?{
+        guard let id = bookDictionary["_id"] as? String,
+              let author = bookDictionary["author"] as? String,
+              let title = bookDictionary["title"] as? String,
+              let publisher = bookDictionary["publisher"] as? String,
+              let description = bookDictionary["description"] as? String,
+              let price = bookDictionary["price"] as? Double,
+              let isbn10 = bookDictionary["isbn10"] as? String,
+              let isbn13 = bookDictionary["isbn13"] as? String,
+              let v = bookDictionary["__v"] as? Int,
+              let language = bookDictionary["language"] as? String,
+              let length = bookDictionary["length"] as? Int,
+              let imageURLString = bookDictionary["imageURL"] as? String
+        else{
+            print("Something is mssing")
+            return nil
+        }
+        guard let imageURL = URL(string: imageURLString) else {
+            print("URL wrong")
+            return nil
+        }
+        let genre = Genre(id: "genrId", name: "Namee", v: v)
+        return Book(id: id, title: title, author: author, description: description, genre: genre, price: price, publisher: publisher, language: language, length: length, imageURL: imageURL, isbn10: isbn10, isbn13: isbn13, v: v)
+        
+    }
+    
 }
 
 var bookManager = BookManager.shared

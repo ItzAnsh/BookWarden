@@ -42,7 +42,7 @@ class UserManager: ObservableObject {
     
     @Published private(set) var user: User?
     
-    @Published var accessToken: String = ""
+    @Published var accessToken: String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjE5YjA1ZTQ2ZmE2ZGJhMmFlYjBiOCIsImlhdCI6MTcxNzk5MzA3MSwiZXhwIjoxNzE4NTk3ODcxfQ.9VVBZlByZFl3aezgZZWP4qYEAJmiAYmXeCr5sUjwBA4"
     @Published var role = ""
     @Published var allUsers: [AllUserResponse] = []
     
@@ -146,6 +146,32 @@ class UserManager: ObservableObject {
         task.resume()
         
         
+    }
+    
+    func parseUser (userDictionary : [String : Any]) -> User? {
+        guard let id = userDictionary["_id"] as? String,
+              let email = userDictionary["email"] as? String,
+              let name = userDictionary["name"] as? String,
+              var roleString = userDictionary["role"] as? String
+        else {
+            return nil
+        }
+        let role = getRole(roleString: roleString)
+        let user = User(id: id, name: name, email: email, contactNo: "", genrePreferences: [], roles: role)
+        return user
+    }
+    
+    func getRole(roleString : String) -> Role {
+        switch roleString {
+        case "" :
+            return .normalUser
+        case "jsgdg21672537612":
+            return .librarian
+        case "2543564fgfjghgfg435" :
+            return .admin
+        default :
+            return .superAdmin
+        }
     }
 }
 

@@ -16,9 +16,9 @@ struct UserProfileView: View {
     init() {
         self.name = "Ansh Bhasin"
         
-        self.issuedBooks = [Book(id: "12312312", title: "New Title", author: "Ansh", description: "New Book", genre: "aksmdasd", price: 123.123, publisher: "Ansh", language: "English", length: 200, imageURL: URL(string: "https://m.media-amazon.com/images/I/61jBLw5Bq9L._AC_UY436_FMwebp_QL65_.jpg")!)]
+        self.issuedBooks = [Book(id: "12312312", title: "New Title", author: "Ansh", description: "New Book", genre: Genre(id: "111", name: "11111", v: 0), price: 123.123, publisher: "Ansh", language: "English", length: 200, imageURL: URL(string: "https://m.media-amazon.com/images/I/61jBLw5Bq9L._AC_UY436_FMwebp_QL65_.jpg")!,isbn10: "242",isbn13: "24323",v: 0)]
         
-        self.fines = [Fine(id: "12312313", issueId: Issue(id: "123131", bookId: Book(id: "12313213", title: "Great Gatsby", author: "James Luthor", description: "aksdmkasmdm kasmdaskm kasmk dmaskmdm aksmkdm kasmd mkasmd kmaksdm kmaskmd msad mkasmdkm as", genre: "NewGenre", price: 123123, publisher: "James Publications", language: "english", length: 400, imageURL: URL(string: "https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg")!), userId: "1231231231", issuedDate: Date(), deadline: Date(), status: .fining, returnDate: Date()) , amount: 123.13, status: .approved, category: .dueDateExceeded, interest: 100)]
+        self.fines = [Fine(id: "12312313", issueId: Issue(id: "123131", book: Book(id: "12313213", title: "Great Gatsby", author: "James Luthor", description: "aksdmkasmdm kasmdaskm kasmk dmaskmdm aksmkdm kasmd mkasmd kmaksdm kmaskmd msad mkasmdkm as", genre: Genre(id: "000", name: "222", v: 11), price: 123123, publisher: "James Publications", language: "english", length: 400, imageURL: URL(string: "https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg")!, isbn10: "11",isbn13: "22",v: 0), user: User(id: "1231231231", name: "user", email: "user@mail.com", contactNo: "123", genrePreferences: [], roles: .normalUser), issuedDate: Date(), deadline: Date(), status: .fining, returnDate: Date()) , amount: 123.13, status: .approved, category: .dueDateExceeded, interest: 100)]
         
 //        isDarkMode = isDark ? true : false
     }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class IssueManager {
+class IssueManager: ObservableObject {
     private init() {}
     static let shared = IssueManager()
     
@@ -38,72 +38,109 @@ class IssueManager {
         }
     }
     
-//    func fetchIssues(accessToken: String, completion: @escaping (Result<[Issue], Error>) -> Void) {
-//        guard let url = URL(string: "https://your-api-url.com/issues") else {
-//            completion(.failure(NetworkError.invalidURL))
-//            return
-//        }
-//        
-//        var urlRequest = URLRequest(url: url)
-//        urlRequest.httpMethod = "GET"
-//        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-//        
-//        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-//                completion(.failure(NetworkError.invalidResponse))
-//                return
-//            }
-//            guard let data = data else {
-//                completion(.failure(NetworkError.noData))
-//                return
-//            }
-//            do {
-//                let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
-//                let issues = jsonArray?.compactMap { dict -> Issue? in
-//                    guard let id = dict["_id"] as? String,
-//                          let bookId = dict["bookId"] as? String,
-//                          let userId = dict["userId"] as? String,
-//                          let issuedDateString = dict["issuedDate"] as? String,
-//                          let deadlineString = dict["deadline"] as? String,
-//                          let statusString = dict["status"] as? String,
-//                          let issuedDate = ISO8601DateFormatter().date(from: issuedDateString),
-//                          let deadline = ISO8601DateFormatter().date(from: deadlineString),
-//                          let status = IssueStatus(rawValue: statusString) else {
-//                        return nil
-//                    }
-//                    
-//                    let returnDate: Date? = {
-//                        if let returnDateString = dict["returnDate"] as? String {
-//                            return ISO8601DateFormatter().date(from: returnDateString)
-//                        }
-//                        return nil
-//                    }()
-//                    
-//                    return Issue(id: id,
-//                                 bookId: bookId,
-//                                 userId: userId,
-//                                 issuedDate: issuedDate,
-//                                 deadline: deadline,
-//                                 status: status,
-//                                 returnDate: returnDate)
-//                }
-//                DispatchQueue.main.async {
-//                    guard let issues = issues else {
-//                        completion(.failure(NetworkError.noData))
-//                        return
-//                    }
-//                    self.issues = issues
-//                    completion(.success(issues))
-//                }
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }.resume()
-//    }
+    func getIssueStatus(issueString : String) -> IssueStatus {
+        switch issueString{
+        case "rejected" :
+            return .rejected
+        case "requested" :
+            return .requested
+        case "issued" :
+            return .issued
+        case "returned" :
+            return .returned
+        case "fined" :
+            return .fined
+        case "fining" :
+            return .fining
+        default :
+            return .issued
+        }
+    }
+    
+    func fetchIssueDetails(issueId: String, accessToken: String, completion: @escaping (Result<Issue, Error>) -> Void) {
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/getSpecificIssue/\(issueId)") else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("Bearer \(UserManager.shared.accessToken)", forHTTPHeaderField: "Authorization")
+        print("Token: \(UserManager.shared.accessToken)")
+        
+        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse))
+                return
+            }
+            guard let data = data else {
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            do {
+                guard let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                    completion(.failure(NetworkError.invalidData))
+                    return
+                }
+                guard let issue = self.parseIssue(jsonDictionary: jsonObject) else {
+                    print("Couldn't parse issue")
+                    completion(.failure(NetworkError.invalidData))
+                    return
+                }
+                completion(.success(issue))
+            } catch {
+                completion(.failure(NetworkError.decodingError))
+            }
+        }.resume()
+    }
+
+    func parseIssue(jsonDictionary : [String: Any]) -> Issue? {
+        guard let userJson = jsonDictionary["userId"] as? [String: Any],
+              let user = UserManager.shared.parseUser(userDictionary: userJson)
+        else {
+            print("Could't parse user")
+            return nil
+        }
+        
+        guard let bookJson = jsonDictionary["bookId"] as? [String: Any],
+              let book = BookManager.shared.parseBook(bookDictionary: bookJson)
+        else{
+            print("Couldn't parse Book")
+            return nil
+        }
+        
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // Include fractional seconds
+
+        
+        guard let issueDateString = jsonDictionary["date"] as? String,
+              let date = isoFormatter.date(from: issueDateString)
+        else {
+            print("Couldn't parse dates")
+            return nil
+        }
+        
+        guard let deadlineDateString = jsonDictionary["deadline"] as? String,
+              let deadlineDate = isoFormatter.date(from: deadlineDateString)
+        else {
+            print("Couldn't parsess dates")
+            return nil
+        }
+        
+        
+        guard let statusString = jsonDictionary["status"] as? String,
+              let id = jsonDictionary["_id"] as? String
+        else {
+            print("Couldn't parse status")
+            return nil
+        }
+        let status = getIssueStatus(issueString: statusString)
+        return Issue(id: id, book: book, user: user, issuedDate: date, deadline: deadlineDate, status: status)
+    }
     
     private func saveIssueToBackend(_ issue: Issue, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
             guard let url = URL(string: "https://your-api-url.com/saveIssue") else {
@@ -149,5 +186,7 @@ class IssueManager {
         case invalidResponse
         case noData
         case badHTTPResponse
+        case decodingError
+        case invalidData
     }
 }

@@ -12,7 +12,10 @@ struct LibrarianRequestsView: View {
     
     @State private var showRejectAlert = false
     @State private var searchText = ""
+    @State private var issueDetails: Issue?
+    @State private var errorMessage: String?
     
+    @ObservedObject var issueManager = IssueManager.shared
     var body: some View {
         NavigationStack {
             ScrollView { // ScrollView to make the entire list scrollable
@@ -91,6 +94,19 @@ struct LibrarianRequestsView: View {
         }
         
         }
+        .onAppear {
+           
+            issueManager.fetchIssueDetails(issueId: "666297c5736f5f33f30a4cc6", accessToken: UserManager.shared.accessToken) { result in
+                        switch result {
+                        case .success(let details):
+                            print(details)
+                            self.issueDetails = details
+                        case .failure(let error):
+                            print(error)
+                            self.errorMessage = error.localizedDescription
+                        }
+                    }
+                }
     }
 }
 
