@@ -57,6 +57,7 @@
 		4DA27A912C11B0AB00AE9055 /* UserFinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */; };
 		4DA27A932C11B0D800AE9055 /* FinesViewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A922C11B0D800AE9055 /* FinesViewCard.swift */; };
 		4DA27A952C124E9600AE9055 /* AddBookModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A942C124E9600AE9055 /* AddBookModalView.swift */; };
+		4DA27A972C1303A500AE9055 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA27A962C1303A500AE9055 /* QRScannerView.swift */; };
 		4DCD0F672C0D1372003CB23F /* BookDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F662C0D1372003CB23F /* BookDescriptionView.swift */; };
 		4DCD0F6A2C0DAE2F003CB23F /* AdminLibrariesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F692C0DAE2F003CB23F /* AdminLibrariesView.swift */; };
 		4DCD0F6D2C0DAF23003CB23F /* SingleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F6C2C0DAF23003CB23F /* SingleLibraryView.swift */; };
@@ -139,6 +140,7 @@
 		4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFinesView.swift; sourceTree = "<group>"; };
 		4DA27A922C11B0D800AE9055 /* FinesViewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinesViewCard.swift; sourceTree = "<group>"; };
 		4DA27A942C124E9600AE9055 /* AddBookModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookModalView.swift; sourceTree = "<group>"; };
+		4DA27A962C1303A500AE9055 /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
 		4DCD0F662C0D1372003CB23F /* BookDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDescriptionView.swift; sourceTree = "<group>"; };
 		4DCD0F692C0DAE2F003CB23F /* AdminLibrariesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminLibrariesView.swift; sourceTree = "<group>"; };
 		4DCD0F6C2C0DAF23003CB23F /* SingleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLibraryView.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				4DA27A8C2C11B06C00AE9055 /* IssuedBooks.swift */,
 				4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */,
 				4DA27A942C124E9600AE9055 /* AddBookModalView.swift */,
+				4DA27A962C1303A500AE9055 /* QRScannerView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -613,6 +616,7 @@
 				4DCD0F7A2C0F82DE003CB23F /* BookFineCard.swift in Sources */,
 				4D2040D22C065BFE004FC6B9 /* CategoryComponent.swift in Sources */,
 				4DA27A952C124E9600AE9055 /* AddBookModalView.swift in Sources */,
+				4DA27A972C1303A500AE9055 /* QRScannerView.swift in Sources */,
 				4DA27A932C11B0D800AE9055 /* FinesViewCard.swift in Sources */,
 				4D2040E32C0798CA004FC6B9 /* CategorySubView.swift in Sources */,
 				4D2040ED2C08E516004FC6B9 /* Login.swift in Sources */,
@@ -809,6 +813,7 @@
 				DEVELOPMENT_TEAM = 7GVS3WCNXX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Give me the perms";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -838,6 +843,7 @@
 				DEVELOPMENT_TEAM = 7GVS3WCNXX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Give me the perms";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

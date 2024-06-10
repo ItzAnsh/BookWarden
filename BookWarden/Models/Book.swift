@@ -9,6 +9,9 @@ struct Book: Identifiable, Codable, Hashable {
     var price: Double
     var publisher: String
     var language: String
+//    var realeaseDate: Sti 
     var length: Int
     var imageURL: URL
+    var isbn10: String
+    var isbn13: String
 }

@@ -18,6 +18,9 @@ struct AddBookModalView: View {
     @State var ISBN10: String = ""
     @State var ISBN13: String = ""
     //    @Binding var modalState: Bool
+//    @State var isShowingScanner = false
+    
+    @State var isbnMode = false
     
     var body: some View {
         NavigationView {
@@ -26,16 +29,7 @@ struct AddBookModalView: View {
             List {
                 
                 Section {
-                    VStack {
-                        Button(action: {}) {
-                            Image(systemName: "barcode.viewfinder")
-                                .foregroundColor(.blue)
-                                .font(.system(size: 80))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .background(Color(.systemGray6)) // Set background to systemGray6
-                    }
-                    .listRowBackground(Color(.systemGray6)) // Make sure list row background matches
+                    QRScannerView(ISBNCode: $ISBN, ISBN10: $ISBN10, ISBN13: $ISBN13, bookName: $bookName, bookAuthor: $bookAuthor, genre: $genre, publisher: $publisher, length: $length)
                 }
                 
                 
@@ -114,7 +108,9 @@ struct AddBookModalView: View {
                 
                 
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: BookQuantitySelect()) {
+                    NavigationLink(destination: BookQuantitySelect(
+                    bookName: $bookName, bookAuthor: $bookAuthor, genre: $genre, language: $language, publisher: $publisher, length: $length, ISBN10: $ISBN10, ISBN13: $ISBN13
+                    )) {
                         
                         Text("Next")
                             .foregroundStyle(.blue)
@@ -133,6 +129,14 @@ struct AddBookModalView: View {
 }
 
 struct BookQuantitySelect: View {
+    @Binding var bookName: String
+    @Binding var bookAuthor: String
+    @Binding var genre: String
+    @Binding var language: String
+    @Binding var publisher: String
+    @Binding var length: String
+    @Binding var ISBN10: String
+    @Binding var ISBN13: String
     @State var totalQuantity = ""
     @State var availableQuantity = ""
     var body: some View {
@@ -161,7 +165,17 @@ struct BookQuantitySelect: View {
             //            }
             
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}) {
+                Button(action: {
+                    BookManager.shared.createBook(book: Book(id: "", title: bookName, author: bookAuthor, description: "", genre: genre, price: 0, publisher: "New publisher", language: language, length: Int(length) ?? 0, imageURL: URL(string: "https://m.media-amazon.com/images/I/81KeOD++BBL._AC_UL640_FMwebp_QL65_.jpg")!, isbn10: "100223445", isbn13: "1292123789012"), token: UserDefaults.standard.string(forKey: "authToken") ?? "") { result in
+                        switch result {
+                        case .success():
+                            print("Added the book")
+                        case .failure(let error):
+                            print("Failed to create book: \(error)")
+                        }
+                        
+                    }
+                }) {
                     Text("Done")
                         .foregroundStyle(.blue)
                 }
