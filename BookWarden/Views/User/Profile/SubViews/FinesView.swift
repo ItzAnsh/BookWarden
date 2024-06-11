@@ -17,7 +17,7 @@ struct FinesView: View {
         NavigationStack {
             ScrollView {
                 ForEach((fines), id: \.self) { fine in
-                    BookFineCard(image: fine.issueId.getBookId().imageURL, name: fine.issueId.getBookId().title, finePerDay: Int(fine.interest), numberOfDays: 20, libraryName: "Some Name")
+                    BookFineCard(image: fine.issueId.getBook().imageURL, name: fine.issueId.getBook().title, finePerDay: Int(fine.interest), numberOfDays: 20, libraryName: "Some Name")
                 }
             }
             .navigationTitle("Fines")

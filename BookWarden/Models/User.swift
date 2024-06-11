@@ -11,6 +11,19 @@ struct User: Codable, Hashable {
     private var issues: [Issue]?
     private var wishlist: Wishlist?
     
+    
+    enum CodingKeys: String, CodingKey {
+            case id = "_id"
+            case name
+            case email
+            case contactNo
+            case genrePreferences
+            case roles
+            case fines
+            case issues
+            case wishlist
+        }
+    
     init(id: String, name: String, email: String, contactNo: String, genrePreferences: [String], roles: Role, fines: [Fine]? = [], issues: [Issue]? = [], wishlist: Wishlist? = nil) {
         self.id = id
         self.name = name
