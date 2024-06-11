@@ -37,6 +37,16 @@ struct Issue: Codable, Hashable {
         self.returnDate = returnDate
     }
     
+    init(issueDetails: Issue) {
+        self.id = issueDetails.getId()
+        self.book = issueDetails.getBook()
+        self.user = issueDetails.getUser()
+        self.issuedDate = issueDetails.getIssuedDate()
+        self.deadline = issueDetails.getDeadline()
+        self.status = issueDetails.getStatus()
+        self.returnDate = issueDetails.getReturnDate()
+    }
+    
     // Getters
     func getId() -> String { return id }
     func getBook() -> Book { return book }
@@ -58,6 +68,10 @@ enum IssueStatus: String, Codable {
     case returned = "returned"
     case fined = "fined"
     case fining = "fining"
+    case finingreturned = "fining-returned"
+    case renewrequested = "renew=requested"
+    case renewrejected = "renew-rejected"
+    case renewapproved = "renew-approved"
 }
 
 

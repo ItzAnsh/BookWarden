@@ -108,7 +108,7 @@ class BookManager: ObservableObject {
                               let title = dict["title"] as? String,
                               let author = dict["author"] as? String,
                               let description = dict["description"] as? String,
-                              let genre = dict["genre"] as? String,
+                              let genreDictionary = dict["genre"] as? [String : Any],
                               let price = dict["price"] as? Double,
                               let publisher = dict["publisher"] as? String,
                               let language = dict["language"] as? String,
@@ -119,6 +119,12 @@ class BookManager: ObservableObject {
                               let isbn13 = dict["isbn13"] as? String,
                               let v = dict["__v"] as? String
                         else {
+                            print("Book data invalid")
+                            return nil
+                        }
+                        
+                        guard let genre = GenreManager.shared.parseGenre(genreJson: genreDictionary) else {
+                            print("Couldn't parse genre")
                             return nil
                         }
                         
@@ -126,7 +132,7 @@ class BookManager: ObservableObject {
                                     title: title,
                                     author: author,
                                     description: description,
-                                    genre: Genre(id: "idd", name: "Horro", v: 0),
+                                    genre: genre,
                                     price: price,
                                     publisher: publisher,
                                     language: language,
@@ -156,6 +162,7 @@ class BookManager: ObservableObject {
               let title = bookDictionary["title"] as? String,
               let publisher = bookDictionary["publisher"] as? String,
               let description = bookDictionary["description"] as? String,
+              let genreDictionary = bookDictionary["genre"] as? [String : Any],
               let price = bookDictionary["price"] as? Double,
               let isbn10 = bookDictionary["isbn10"] as? String,
               let isbn13 = bookDictionary["isbn13"] as? String,
@@ -171,7 +178,10 @@ class BookManager: ObservableObject {
             print("URL wrong")
             return nil
         }
-        let genre = Genre(id: "genrId", name: "Namee", v: v)
+        guard let genre = GenreManager.shared.parseGenre(genreJson: genreDictionary) else {
+            print("Couldn't parse genre")
+            return nil
+        }
         return Book(id: id, title: title, author: author, description: description, genre: genre, price: price, publisher: publisher, language: language, length: length, imageURL: imageURL, isbn10: isbn10, isbn13: isbn13, v: v)
         
     }

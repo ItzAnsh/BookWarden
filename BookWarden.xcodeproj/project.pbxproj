@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D2D61D32C18427B0046C2F4 /* LibraryIssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */; };
+		3D8EEAB02C18491400C8E01A /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8EEAAF2C18491400C8E01A /* CameraViewController.swift */; };
+		3D8EEAB42C184DB800C8E01A /* IssueRequestModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8EEAB32C184DB800C8E01A /* IssueRequestModalView.swift */; };
 		4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E20C82BFDB3670023B910 /* BookWardenApp.swift */; };
 		4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E20CA2BFDB3670023B910 /* ContentView.swift */; };
 		4D1E20CD2BFDB3690023B910 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D1E20CC2BFDB3690023B910 /* Assets.xcassets */; };
@@ -86,6 +89,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryIssueView.swift; sourceTree = "<group>"; };
+		3D8EEAAF2C18491400C8E01A /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		3D8EEAB32C184DB800C8E01A /* IssueRequestModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRequestModalView.swift; sourceTree = "<group>"; };
 		4D1E20C52BFDB3670023B910 /* BookWarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookWarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D1E20C82BFDB3670023B910 /* BookWardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookWardenApp.swift; sourceTree = "<group>"; };
 		4D1E20CA2BFDB3670023B910 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -297,10 +303,12 @@
 		4D2040F02C09E528004FC6B9 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				3D8EEAAF2C18491400C8E01A /* CameraViewController.swift */,
 				4DA27A8A2C11B01500AE9055 /* UserDetailView.swift */,
 				4DA27A8C2C11B06C00AE9055 /* IssuedBooks.swift */,
 				4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */,
 				4DA27A942C124E9600AE9055 /* AddBookModalView.swift */,
+				3D8EEAB32C184DB800C8E01A /* IssueRequestModalView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -370,6 +378,7 @@
 				4D2040F32C09E59B004FC6B9 /* LibrarianCatalogueView.swift */,
 				4D2040F52C09E6D8004FC6B9 /* LibrarianUsersView.swift */,
 				4D2040F92C09FDFB004FC6B9 /* LibrarianRequestsView.swift */,
+				3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */,
 			);
 			path = Librarian;
 			sourceTree = "<group>";
@@ -621,6 +630,7 @@
 				4D2040D62C071818004FC6B9 /* TitleComponent.swift in Sources */,
 				4D2041002C0A3106004FC6B9 /* Fine.swift in Sources */,
 				4D2041042C0A3146004FC6B9 /* Book.swift in Sources */,
+				3D8EEAB42C184DB800C8E01A /* IssueRequestModalView.swift in Sources */,
 				4D2040DB2C076C16004FC6B9 /* BooksCategoryListView.swift in Sources */,
 				4DCD0F712C0DB869003CB23F /* AdminAddLibrarySubView.swift in Sources */,
 				4D5ADAAC2C04F0D2002EAC6A /* AdminHomeView.swift in Sources */,
@@ -631,6 +641,7 @@
 				4D8F430D2C05E92A00B3F342 /* UserView.swift in Sources */,
 				4D2040F42C09E59C004FC6B9 /* LibrarianCatalogueView.swift in Sources */,
 				4D2040F82C09F1DF004FC6B9 /* CatalogueSingleBookSubView.swift in Sources */,
+				3D2D61D32C18427B0046C2F4 /* LibraryIssueView.swift in Sources */,
 				4DCD0F6F2C0DB4F0003CB23F /* AdminStatsView.swift in Sources */,
 				4DCD0F742C0F825C003CB23F /* IssuedBooksView.swift in Sources */,
 				4D2041132C0B849E004FC6B9 /* BookManager.swift in Sources */,
@@ -641,6 +652,7 @@
 				4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */,
 				4DCD0F782C0F82AD003CB23F /* FinesView.swift in Sources */,
 				4D20410D2C0B678B004FC6B9 /* LibraryManager.swift in Sources */,
+				3D8EEAB02C18491400C8E01A /* CameraViewController.swift in Sources */,
 				4DCD0F6D2C0DAF23003CB23F /* SingleLibraryView.swift in Sources */,
 				4D2041152C0B84F4004FC6B9 /* WishlistManager.swift in Sources */,
 			);
@@ -806,9 +818,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BookWarden/Preview Content\"";
-				DEVELOPMENT_TEAM = 7GVS3WCNXX;
+				DEVELOPMENT_TEAM = 7H4KT73752;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "qrcode scan";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -819,7 +832,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = AnshBhasin.BookWarden;
+				PRODUCT_BUNDLE_IDENTIFIER = com.palak.BookWarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -835,9 +848,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BookWarden/Preview Content\"";
-				DEVELOPMENT_TEAM = 7GVS3WCNXX;
+				DEVELOPMENT_TEAM = 7H4KT73752;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "qrcode scan";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -848,7 +862,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = AnshBhasin.BookWarden;
+				PRODUCT_BUNDLE_IDENTIFIER = com.palak.BookWarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

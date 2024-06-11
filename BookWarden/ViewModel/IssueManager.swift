@@ -52,6 +52,14 @@ class IssueManager: ObservableObject {
             return .fined
         case "fining" :
             return .fining
+        case "fining-returned" :
+            return .finingreturned
+        case "renew-requested" :
+            return .renewrequested
+        case "renew-rejected" :
+            return .renewrejected
+        case "renew-approved" :
+            return .renewapproved
         default :
             return .issued
         }
