@@ -21,7 +21,7 @@ struct UserHomeView: View {
                 // Used to distribute elements vertically
                 VStack(spacing: 20) {
                     
-                    VStack(spacing: 10) {                        
+                    VStack(spacing: 10) {
                         // Horizontal scroll View used for horizontal scrolling
                         ScrollView(.horizontal) {
                             

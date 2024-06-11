@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		050E607E2C18D3D8004417F3 /* AddGenreModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */; };
+		05C07F2D2C118333005B6A74 /* AdminEditLibrarySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */; };
+		05CD27062C13032E007F9729 /* SingleLibraryRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */; };
 		3D2D61D32C18427B0046C2F4 /* LibraryIssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */; };
 		3D8EEAB02C18491400C8E01A /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8EEAAF2C18491400C8E01A /* CameraViewController.swift */; };
 		3D8EEAB42C184DB800C8E01A /* IssueRequestModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8EEAB32C184DB800C8E01A /* IssueRequestModalView.swift */; };
-		05C07F2D2C118333005B6A74 /* AdminEditLibrarySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */; };
-		05CD27062C13032E007F9729 /* SingleLibraryRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */; };
 		4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E20C82BFDB3670023B910 /* BookWardenApp.swift */; };
 		4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E20CA2BFDB3670023B910 /* ContentView.swift */; };
 		4D1E20CD2BFDB3690023B910 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D1E20CC2BFDB3690023B910 /* Assets.xcassets */; };
@@ -92,11 +93,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGenreModalView.swift; sourceTree = "<group>"; };
+		05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEditLibrarySubView.swift; sourceTree = "<group>"; };
+		05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLibraryRequestView.swift; sourceTree = "<group>"; };
 		3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryIssueView.swift; sourceTree = "<group>"; };
 		3D8EEAAF2C18491400C8E01A /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3D8EEAB32C184DB800C8E01A /* IssueRequestModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRequestModalView.swift; sourceTree = "<group>"; };
-		05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEditLibrarySubView.swift; sourceTree = "<group>"; };
-		05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLibraryRequestView.swift; sourceTree = "<group>"; };
 		4D1E20C52BFDB3670023B910 /* BookWarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookWarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D1E20C82BFDB3670023B910 /* BookWardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookWardenApp.swift; sourceTree = "<group>"; };
 		4D1E20CA2BFDB3670023B910 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -310,12 +312,13 @@
 			isa = PBXGroup;
 			children = (
 				3D8EEAAF2C18491400C8E01A /* CameraViewController.swift */,
-        3D8EEAB32C184DB800C8E01A /* IssueRequestModalView.swift */,
+				3D8EEAB32C184DB800C8E01A /* IssueRequestModalView.swift */,
 				4DA27A8A2C11B01500AE9055 /* UserDetailView.swift */,
 				4DA27A8C2C11B06C00AE9055 /* IssuedBooks.swift */,
 				4DA27A902C11B0AB00AE9055 /* UserFinesView.swift */,
 				4DA27A942C124E9600AE9055 /* AddBookModalView.swift */,
 				4DA27A962C1303A500AE9055 /* QRScannerView.swift */,
+				050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 				4D2040F42C09E59C004FC6B9 /* LibrarianCatalogueView.swift in Sources */,
 				05C07F2D2C118333005B6A74 /* AdminEditLibrarySubView.swift in Sources */,
 				4D2040F82C09F1DF004FC6B9 /* CatalogueSingleBookSubView.swift in Sources */,
+				050E607E2C18D3D8004417F3 /* AddGenreModalView.swift in Sources */,
 				3D2D61D32C18427B0046C2F4 /* LibraryIssueView.swift in Sources */,
 				05CD27062C13032E007F9729 /* SingleLibraryRequestView.swift in Sources */,
 				4DCD0F6F2C0DB4F0003CB23F /* AdminStatsView.swift in Sources */,

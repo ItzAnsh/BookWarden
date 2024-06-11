@@ -2,8 +2,8 @@ import SwiftUI
 
 struct UserLibraryView: View {
     @ObservedObject var bookManager = BookManager.shared
-    
-    var newArr: [[Book]] {
+    @State private var bookToDelete: String? = ""
+        var newArr: [[Book]] {
         var newArray: [[Book]] = []
         
         for i in stride(from: 0, to: bookManager.books.count, by: 2) {
@@ -26,7 +26,7 @@ struct UserLibraryView: View {
                         HStack(spacing: 24) {
                             ForEach(newArr[index], id: \.id) { book in
 //                                Spacer()
-                                CatalogueSingleBookSubView(alertState: $issuedBookAlert, image: book.imageURL, title: book.title, author: book.author)
+                                CatalogueSingleBookSubView(alertState: $issuedBookAlert,id:book.id, image: book.imageURL, title: book.title, author: book.author, bookToDelete: $bookToDelete)
 //                                Spacer()
                             }
                         }
