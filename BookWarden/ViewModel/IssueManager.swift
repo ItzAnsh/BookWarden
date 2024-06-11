@@ -11,7 +11,7 @@ class IssueManager: ObservableObject {
     private init() {}
     static let shared = IssueManager()
     
-    private(set) var issues: [Issue] = []
+    @Published private(set) var issues: [Issue] = []
     
     func addIssue(_ issue: Issue, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
         guard !issues.contains(where: { $0.getId() == issue.getId() }) else {

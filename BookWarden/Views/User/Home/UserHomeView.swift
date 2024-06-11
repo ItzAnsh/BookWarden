@@ -38,6 +38,7 @@ struct UserHomeView: View {
                     VStack(spacing: 34) {
                         UserRecommendationView()
                         
+//                        TitleComponent(
                         UserHomeGenresSubView()
                         
                         VStack() {

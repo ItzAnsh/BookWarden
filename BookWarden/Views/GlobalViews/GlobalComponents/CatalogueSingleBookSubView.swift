@@ -13,28 +13,35 @@ enum CatalogueTypes {
 }
 
 struct CatalogueSingleBookSubView: View {
+    @Binding var alertState: Bool
     var image: URL
     var categoryType: CatalogueTypes = .member
     var available: Bool = true
+    var title: String
+    var author: String
     var body: some View {
-        VStack(spacing: 10) {
-            AsyncImage(url: image) {image in
-                image
-                    .resizable()
-                    .frame(width: 161, height: 201)
-                    .scaledToFill()
-                if available {
+        VStack(alignment: .leading, spacing: 10) {
+            NavigationLink(destination: BookDescriptionView(title: title, image: image, author: author)) {
+                AsyncImage(url: image) {image in
+                    image
+                        .resizable()
+                        .frame(width: 161, height: 201)
+                        .scaledToFill()
+                    if available {
+                        
+                    }
                     
+                } placeholder: {
+                    ProgressView()
                 }
-                
-            } placeholder: {
-                ProgressView()
             }
             
             VStack {
                 HStack {
                     
-                    Button(action: {}) {
+                    Button(action: {
+                        alertState = true
+                    }) {
                         Text(categoryType == .librarian ? "Request" : "ISSUE")
                     }
                     .font(.headline)
@@ -53,6 +60,9 @@ struct CatalogueSingleBookSubView: View {
                 }
             }
         }
+        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/ / 2)
+        .frame(width: 161)
+        
     }
 }
 
