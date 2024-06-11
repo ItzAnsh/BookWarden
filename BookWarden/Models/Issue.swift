@@ -73,6 +73,3 @@ enum IssueStatus: String, Codable {
     case renewrejected = "renew-rejected"
     case renewapproved = "renew-approved"
 }
-
-
-

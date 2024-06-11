@@ -106,4 +106,3 @@ class GenreManager {
         case badHTTPResponse
     }
 }
-
