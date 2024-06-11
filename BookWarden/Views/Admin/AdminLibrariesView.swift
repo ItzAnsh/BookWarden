@@ -3,15 +3,23 @@ import SwiftUI
 struct AdminLibrariesView: View {
     @State var searchText = ""
     @State var modalState: Bool = false
+    @StateObject var libraryManager = LibraryManager.shared
     
-    @ObservedObject var libraryManager = LibraryManager.shared
-    
+    var filteredLibraries: [Library] {
+        if searchText.isEmpty {
+            return libraryManager.libraries
+        } else {
+            return libraryManager.libraries.filter { library in
+                library.getName().localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 10) {
-                    ForEach(libraryManager.libraries) { library in
-                        SingleLibraryView(title: library.getName(), location: library.getLocation())
+                    ForEach(filteredLibraries) { library in
+                        SingleLibraryView(id: library.getId(), title: library.getName(), location: library.getLocation(), contactNo: library.getContactNo(),contactEmail: library.getContactEmail(),issuePeriod: library.getIssuePeriod(),maxBooks: library.getMaxBooks(),fineInterest: library.getFineInterest(), librarianEmail: library.getLibrarian().getEmail())
                     }
                 }
                 .padding(.horizontal)
@@ -20,7 +28,7 @@ struct AdminLibrariesView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
-                            modalState = true
+                        modalState = true
                         }) {
                             Image(systemName: "plus")
                         }
@@ -44,23 +52,6 @@ struct AdminLibrariesView: View {
         }
     }
 }
-//
-//struct SingleLibraryView: View {
-//    var library: Library
-//    
-//    var body: some View {
-//        VStack(alignment: .leading) {
-//            Text(library.name)
-//                .font(.headline)
-//            Text(library.location)
-//                .font(.subheadline)
-//            // Add other details as necessary
-//        }
-//        .padding()
-//        .background(Color(.secondarySystemBackground))
-//        .cornerRadius(8)
-//    }
-//}
 
 #Preview {
     AdminLibrariesView()

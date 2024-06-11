@@ -1,26 +1,29 @@
 //
-//  AdminAddLibrarySubView.swift
+//  AdminEditLibrarySubView.swift
 //  BookWarden
 //
-//  Created by Ansh Bhasin on 03/06/24.
+//  Created by Manan Gupta on 06/06/24.
 //
+
 import SwiftUI
 
-struct AdminAddLibrarySubView: View {
-    @State private var name: String = ""
-    @State private var location = ""
-    @State private var contactEmail = ""
-    @State private var contactNo = ""
-    @State private var issuePeriod = ""
-    @State private var maxBooks = ""
-    @State private var fineInterest = ""
-    @State private var librarianEmail = ""
+struct AdminEditLibrarySubView: View {
+    @Binding var id: String
+    @Binding var name: String
+    @Binding var location: String
+    @Binding var contactEmail: String
+    @Binding var contactNo: String
+    @Binding var issuePeriod: Int
+    @Binding var maxBooks: Int
+    @Binding var fineInterest: Int
+    @Binding var librarianEmail: String
     
     @Environment(\.presentationMode) var presentationMode
     @StateObject var libraryManager = LibraryManager.shared
     @State private var showAlert = false
     @State private var emailAlert = false
     @State private var alertMessage = ""
+    
     
     var body: some View {
         NavigationView {
@@ -43,7 +46,10 @@ struct AdminAddLibrarySubView: View {
                     HStack {
                         Text("Issue Period")
                         Spacer()
-                        TextField("Enter days", text: $issuePeriod)
+                        TextField("Enter days", text: Binding<String>(
+                            get: { String(issuePeriod) },
+                            set: { issuePeriod = Int($0) ?? 0 }
+                        ))
                             .frame(width: 90)
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
@@ -51,7 +57,10 @@ struct AdminAddLibrarySubView: View {
                     HStack {
                         Text("Issued Books Limit")
                         Spacer()
-                        TextField("Qty.", text: $maxBooks)
+                        TextField("Qty.", text: Binding<String>(
+                            get: { String(maxBooks) },
+                            set: { maxBooks = Int($0) ?? 0 }
+                        ))
                             .frame(width: 90)
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
@@ -59,7 +68,10 @@ struct AdminAddLibrarySubView: View {
                     HStack {
                         Text("Per Day Fine")
                         Spacer()
-                        TextField("Enter amount", text: $fineInterest)
+                        TextField("Enter amount", text: Binding<String>(
+                            get: { String(fineInterest) },
+                            set: { fineInterest = Int($0) ?? 0 }
+                        ))
                             .frame(width: 110)
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
@@ -97,7 +109,7 @@ struct AdminAddLibrarySubView: View {
             }
             .toolbarBackground(Color(.systemGray6))
             .toolbarBackground(.visible)
-            .navigationTitle("Add Library Details")
+            .navigationTitle("Edit Library Details")
             .navigationBarTitleDisplayMode(.inline)
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -108,40 +120,18 @@ struct AdminAddLibrarySubView: View {
         }
     }
     
-    private func createLibraryRequestBody() -> LibraryCreateBody? {
-        guard let issuePeriodInt = Int(issuePeriod), let maxBooksInt = Int(maxBooks), let fineInterestInt = Int(fineInterest) else {
-            alertMessage = "Please enter valid numerical values for Issue Period, Max Books, and Fine Interest."
-            showAlert = true
-            return nil
-        }
-        
-        return LibraryCreateBody(
-            name: name,
-            location: location,
-            contactNo: contactNo,
-            contactEmail: contactEmail,
-            totalBooks: 0,
-            librarianEmail: librarianEmail,
-            maxBooks: maxBooksInt,
-            issuePeriod: issuePeriodInt,
-            fineInterest: fineInterestInt
-        )
-    }
     
     private func saveLibrary() {
-        guard let libraryRequestBody = createLibraryRequestBody() else { return }
+        let updatedDetails = LibraryCreateBody(name: name, location: location, contactNo: contactNo, contactEmail: contactEmail, totalBooks: 0, librarianEmail: librarianEmail, maxBooks: maxBooks, issuePeriod: issuePeriod, fineInterest: fineInterest)
         
-        libraryManager.addLibrary(libraryRequestBody: libraryRequestBody, accessToken: UserManager.shared.accessToken) { result in
+        libraryManager.updateLibrary(libraryId: id, updatedDetails: updatedDetails, accessToken: UserManager.shared.accessToken) { result in
             switch result {
-            case .success():
-                DispatchQueue.main.async {
-                    presentationMode.wrappedValue.dismiss()
-                }
+            case .success:
+                presentationMode.wrappedValue.dismiss()
+                print("Library details updated successfully")
             case .failure(let error):
-                DispatchQueue.main.async {
-                    alertMessage = error.localizedDescription
-                    showAlert = true
-                }
+                showAlert = true
+                alertMessage = error.localizedDescription
             }
         }
     }

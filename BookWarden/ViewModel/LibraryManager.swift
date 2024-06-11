@@ -208,6 +208,7 @@ class LibraryManager: ObservableObject {
         }
         return Library(id: id, name: name, location: location, contactNo: contactNo, contactEmail: contactEmail, totalBooks: 0, issuePeriod: issuePeriod, maxBooks: maxBooks, fineInterest: fineInterest, librarian: User(id: "id", name: "name", email: "email", contactNo: "11", genrePreferences: [], roles: .librarian))
     }
+    
     enum LibraryManagerError: Error {
         case libraryAlreadyExists
     }
