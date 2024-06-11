@@ -10,15 +10,16 @@ import SwiftUI
 struct LibrarianCatalogueView: View {
     @State var addModalPresent = false
     @State var searchText: String = ""
+    @State var alertState: Bool = false
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 35) {
                     ForEach((0..<5), id: \.self) { _ in
                         HStack(spacing: 24) {
-                            CatalogueSingleBookSubView(image: URL(string: "https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg")!, categoryType: .librarian)
-                            CatalogueSingleBookSubView(image:
-                                                        URL(string: "https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg")!, categoryType: .librarian)
+                            CatalogueSingleBookSubView(alertState: $alertState, image: URL(string: "https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg")!, categoryType: .librarian, title: "How to be happy", author: "Jane austen")
+                            CatalogueSingleBookSubView(alertState: $alertState, image:
+                                                        URL(string: "https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg")!, categoryType: .librarian, title: "How to be happy", author: "Jane austen")
                         }
                     }
                 }
