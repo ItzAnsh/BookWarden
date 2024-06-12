@@ -185,6 +185,50 @@ class IssueManager: ObservableObject {
                 completion(.success(()))
             }.resume()
         }
+    
+    func approveReturn(issueId: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
+            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/approveReturn") else {
+                completion(.failure(NetworkError.invalidURL))
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PATCH"
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let body: [String: Any] = ["issueId": issueId]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+            } catch {
+                completion(.failure(NetworkError.encodingError))
+                return
+            }
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    completion(.failure(NetworkError.badHTTPResponse))
+                    return
+                }
+                
+                // Update issue status locally
+                DispatchQueue.main.async {
+                    if let index = self.issues.firstIndex(where: { $0.getId() == issueId }) {
+                        self.issues[index].setStatus(.returned)
+                    }
+                    completion(.success(()))
+                }
+            }.resume()
+        }
+        
+    
     enum IssueManagerError: Error {
         case issueAlreadyExists
     }
@@ -196,5 +240,6 @@ class IssueManager: ObservableObject {
         case badHTTPResponse
         case decodingError
         case invalidData
+        case encodingError
     }
 }

@@ -135,7 +135,7 @@ struct LibrarianRequestsView: View {
                 Button("Done", role: .cancel) { }
             }
             .sheet(isPresented: $showModal) {
-                IssueRequestModalView(issueDetails: $issueDetails)
+                IssueRequestModalView(issueDetails: $issueDetails, isPresented: $showModal)
             }
         }
     }
@@ -148,16 +148,19 @@ import SwiftUI
 
 struct IssueRequestModalView: View {
     @Binding var issueDetails: Issue?
+    @Binding var isPresented: Bool
+    
+    let allowedStatuses: [IssueStatus] = [.issued, .fined, .fining, .renewrequested, .renewrejected, .renewapproved]
     
     var body: some View {
         VStack {
             if let issueDetails = issueDetails {
-                Text("\(issueDetails.getUser().getName())'s request")
+                Text("\(issueDetails.getUser().getName())'s Return")
                     .font(.system(size: 32, weight: .medium, design: .default))
                     .frame(maxWidth: .infinity, maxHeight: 100)
                 
                 VStack {
-                    AsyncImage(url:  issueDetails.getBook().imageURL) { image in
+                    AsyncImage(url: issueDetails.getBook().imageURL) { image in
                         image.resizable()
                     } placeholder: {
                         ProgressView()
@@ -168,8 +171,8 @@ struct IssueRequestModalView: View {
                     VStack(spacing: 6) {
                         Text(issueDetails.getBook().title)
                             .font(.system(size: 32, weight: .medium, design: .default))
-                            .padding(.bottom,20)
-                        HStack{
+                            .padding(.bottom, 20)
+                        HStack {
                             Text("Issue Date")
                                 .font(.system(size: 16, weight: .medium, design: .default))
                             Spacer()
@@ -177,7 +180,7 @@ struct IssueRequestModalView: View {
                                 .font(.system(size: 16, weight: .medium, design: .default))
                         }
                         Divider()
-                        HStack{
+                        HStack {
                             Text("Deadline")
                                 .font(.system(size: 16, weight: .medium, design: .default))
                             Spacer()
@@ -185,7 +188,7 @@ struct IssueRequestModalView: View {
                                 .font(.system(size: 16, weight: .medium, design: .default))
                         }
                         Divider()
-                        HStack{
+                        HStack {
                             Text("Status")
                                 .font(.system(size: 16, weight: .medium, design: .default))
                             Spacer()
@@ -196,24 +199,40 @@ struct IssueRequestModalView: View {
                     }
                     .safeAreaPadding()
                     
-                    
                     Spacer()
                     
-                    HStack (){
-                        Button {
-                        } label: {
-                            Text("Approve")
-                                .frame(width: 140, height: 50)
-                                .background(Color.blue)
-                                .cornerRadius(25) // Use a fixed radius value
-                                .foregroundColor(.white)
+                    // Conditionally show the "Approve" button
+                    if allowedStatuses.contains(issueDetails.getStatus()) {
+                        HStack {
+                            Button {
+                                approveReturn(issueId: issueDetails.getId())
+                            } label: {
+                                Text("Approve")
+                                    .frame(width: 140, height: 50)
+                                    .background(Color.blue)
+                                    .cornerRadius(25)
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
                 }
                 Spacer()
             }
-                
         }
         .padding()
+    }
+    
+    // Function to approve return using IssueManager
+    private func approveReturn(issueId: String) {
+        IssueManager.shared.approveReturn(issueId: issueId, accessToken: UserManager.shared.accessToken) { result in
+            switch result {
+            case .success():
+                DispatchQueue.main.async {
+                    self.isPresented = false // Dismiss the modal
+                }
+            case .failure(let error):
+                print("Error approving return: \(error)")
+            }
+        }
     }
 }
