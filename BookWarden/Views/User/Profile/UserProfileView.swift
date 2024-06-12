@@ -141,6 +141,11 @@ struct UserProfileView: View {
             .listStyle(GroupedListStyle())
             .navigationTitle("Profile")
         }
+        .onAppear() {
+            userManager.fetchUserDetails(accessToken: UserDefaults.standard.string(forKey: "authToken") ?? "") { _ in
+                print("something")
+            }
+        }
     }
 
     private func signOut() {

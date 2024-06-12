@@ -173,10 +173,57 @@ class UserManager: ObservableObject {
             return .superAdmin
         }
     }
+    
+    // Function to fetch user details with authorization token
+    func fetchUserDetails(accessToken: String, completion: @escaping (Result<ResponseData, Error>) -> Void) {
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/myProfile") else {
+                print("Invalid URL")
+                return
+            }
+            
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // Add authorization token to the request header
+        let token = UserDefaults.standard.string(forKey: "authToken")!
+        print(token)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            print(String(data: data ?? Data(), encoding: .utf8) ?? "")
+        }
+    }
 }
 
 //var userManager = UserManager.shared
 
 
+// Model Extensions for Parsing from Dictionary
+extension User {
+    init(from dictionary: [String: Any]) throws {
+        let data = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+        self = try JSONDecoder().decode(User.self, from: data)
+    }
+}
+
+extension Issue {
+    init(from dictionary: [String: Any]) throws {
+        let data = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+        self = try JSONDecoder().decode(Issue.self, from: data)
+    }
+}
+
+extension Fine {
+    init(from dictionary: [String: Any]) throws {
+        let data = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+        self = try JSONDecoder().decode(Fine.self, from: data)
+    }
+}
 
 //var userManager = UserManager()
+
+struct ResponseData {
+    let userDetails: User
+    let fines: [Fine]
+    let issues: [Issue]
+}
