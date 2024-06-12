@@ -135,14 +135,11 @@ struct LibrarianRequestsView: View {
                 Button("Done", role: .cancel) { }
             }
             .sheet(isPresented: $showModal) {
-                //if let issueDetails1 = issueDetails {
-                    IssueRequestModalView(issueDetails: $issueDetails)
-               // }
+                IssueRequestModalView(issueDetails: $issueDetails)
             }
         }
     }
 }
-
 #Preview {
     LibrarianRequestsView()
 }

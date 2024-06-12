@@ -44,21 +44,21 @@ class IssueManager: ObservableObject {
             return .rejected
         case "requested" :
             return .requested
-        case "issued" :
+        case "issued" ://
             return .issued
         case "returned" :
             return .returned
-        case "fined" :
+        case "fined" ://
             return .fined
-        case "fining" :
+        case "fining" ://
             return .fining
         case "fining-returned" :
             return .finingreturned
-        case "renew-requested" :
+        case "renew-requested" ://
             return .renewrequested
-        case "renew-rejected" :
+        case "renew-rejected" ://
             return .renewrejected
-        case "renew-approved" :
+        case "renew-approved" ://
             return .renewapproved
         default :
             return .issued
