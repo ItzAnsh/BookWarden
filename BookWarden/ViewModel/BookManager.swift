@@ -117,7 +117,7 @@ class BookManager: ObservableObject {
                               let imageURL = URL(string: imageURLString),
                               let isbn10 = dict["isbn10"] as? String,
                               let isbn13 = dict["isbn13"] as? String,
-                              let v = dict["__v"] as? String
+                              let v = dict["__v"] as? Int
                         else {
                             print("Book data invalid")
                             return nil
@@ -140,7 +140,7 @@ class BookManager: ObservableObject {
                                     imageURL: imageURL,
                                     isbn10: isbn10,
                                     isbn13: isbn13,
-                                    v: 0
+                                    v: v
                         )
                     }
                     

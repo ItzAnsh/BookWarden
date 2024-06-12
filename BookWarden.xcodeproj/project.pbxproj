@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		050E607E2C18D3D8004417F3 /* AddGenreModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */; };
+		050E60802C199B3E004417F3 /* SingleIssueRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E607F2C199B3E004417F3 /* SingleIssueRequestView.swift */; };
 		05C07F2D2C118333005B6A74 /* AdminEditLibrarySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */; };
 		05CD27062C13032E007F9729 /* SingleLibraryRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */; };
 		3D2D61D32C18427B0046C2F4 /* LibraryIssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */; };
@@ -94,6 +95,7 @@
 
 /* Begin PBXFileReference section */
 		050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGenreModalView.swift; sourceTree = "<group>"; };
+		050E607F2C199B3E004417F3 /* SingleIssueRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleIssueRequestView.swift; sourceTree = "<group>"; };
 		05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEditLibrarySubView.swift; sourceTree = "<group>"; };
 		05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLibraryRequestView.swift; sourceTree = "<group>"; };
 		3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryIssueView.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				4DA27A942C124E9600AE9055 /* AddBookModalView.swift */,
 				4DA27A962C1303A500AE9055 /* QRScannerView.swift */,
 				050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */,
+				050E607F2C199B3E004417F3 /* SingleIssueRequestView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -668,6 +671,7 @@
 				4D1E20C92BFDB3670023B910 /* BookWardenApp.swift in Sources */,
 				4DCD0F782C0F82AD003CB23F /* FinesView.swift in Sources */,
 				4D20410D2C0B678B004FC6B9 /* LibraryManager.swift in Sources */,
+				050E60802C199B3E004417F3 /* SingleIssueRequestView.swift in Sources */,
 				3D8EEAB02C18491400C8E01A /* CameraViewController.swift in Sources */,
 				4DCD0F6D2C0DAF23003CB23F /* SingleLibraryView.swift in Sources */,
 				4D2041152C0B84F4004FC6B9 /* WishlistManager.swift in Sources */,
