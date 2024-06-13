@@ -137,7 +137,8 @@ class LibraryManager: ObservableObject {
                           let librarianDict = dict["librarian"] as? [String: Any],
                           let librarianId = librarianDict["_id"] as? String,
                           let librarianName = librarianDict["name"] as? String,
-                          let librarianEmail = librarianDict["email"] as? String
+                          let librarianEmail = librarianDict["email"] as? String,
+                          let adminId = librarianDict["adminId"] as? String
                     else {
                         return nil
                     }
@@ -153,7 +154,9 @@ class LibraryManager: ObservableObject {
                                    issuePeriod: issuePeriod,
                                    maxBooks: maxBooks,
                                    fineInterest: fineInterest,
-                                   librarian: librarian)
+                                   librarian: librarian,
+                    adminId: adminId)
+//                    Librar
                 }
                 DispatchQueue.main.async {
                     guard let libraries = libraries else {
@@ -202,11 +205,12 @@ class LibraryManager: ObservableObject {
               let totalBooks = libraryDictionary["totalBooks"] as? String,
               let issuePeriod = libraryDictionary["issuePeriod"] as? Int,
               let maxBooks = libraryDictionary["maxBooks"] as? Int,
-              let fineInterest = libraryDictionary["fineInterest"] as? Int
+              let fineInterest = libraryDictionary["fineInterest"] as? Int,
+              let adminId = libraryDictionary["adminId"] as? String
         else{
             return nil
         }
-        return Library(id: id, name: name, location: location, contactNo: contactNo, contactEmail: contactEmail, totalBooks: 0, issuePeriod: issuePeriod, maxBooks: maxBooks, fineInterest: fineInterest, librarian: User(id: "id", name: "name", email: "email", contactNo: "11", genrePreferences: [], roles: .librarian))
+        return Library(id: id, name: name, location: location, contactNo: contactNo, contactEmail: contactEmail, totalBooks: 0, issuePeriod: issuePeriod, maxBooks: maxBooks, fineInterest: fineInterest, librarian: User(id: "id", name: "name", email: "email", contactNo: "11", genrePreferences: [], roles: .librarian), adminId: adminId)
     }
     enum LibraryManagerError: Error {
         case libraryAlreadyExists

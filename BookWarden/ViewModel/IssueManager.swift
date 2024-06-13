@@ -73,7 +73,7 @@ class IssueManager: ObservableObject {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(UserManager.shared.accessToken)", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
         print("Token: \(UserManager.shared.accessToken)")
         
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in
@@ -185,7 +185,7 @@ class IssueManager: ObservableObject {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(UserManager.shared.accessToken)", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
         print("Token: \(UserManager.shared.accessToken)")
         
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in

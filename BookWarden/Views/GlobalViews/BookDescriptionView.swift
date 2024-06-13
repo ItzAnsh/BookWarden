@@ -131,9 +131,7 @@ struct BookTopView: View {
 }
 
 struct BookDescriptionView: View {
-    var title: String
-    var image: URL
-    var author: String
+    var book: Book
     
     @State var issuedBookAlert: Bool = false
     @State var liked: Bool = false
@@ -146,7 +144,7 @@ struct BookDescriptionView: View {
             NavigationStack {
                 
                 VStack {
-                    BookTopView(screenSize: .zero, alertState: $issuedBookAlert, liked: $liked, issuedStatus: $issuedStatus, image: image, title: title, author: author)
+                    BookTopView(screenSize: .zero, alertState: $issuedBookAlert, liked: $liked, issuedStatus: $issuedStatus, image: book.imageURL, title: book.title, author: book.author)
 //                    ScrollView(.horizontal) {
                         HStack {
                             VStack(alignment: .center) {
@@ -252,11 +250,13 @@ struct BookDescriptionView: View {
                 
             }
         }
-        .background(colorScheme == .light ? Color(UIColor.systemGray6).edgesIgnoringSafeArea(.all) as! Color : Color(.black))
+        .background(colorScheme == .light ? Color(UIColor.systemGray6) : Color(.black))
         .alert("Are you sure?", isPresented: $issuedBookAlert) {
 //                Alert("Are you sure?") {
             Button("Issue", role: .cancel) {
-                
+                BookManager.shared.issueBook(bookId: book.id, libraryId: book.location[0].id, accessToken: UserDefaults.standard.string(forKey: "authToken") ?? "") {
+                    _ in
+                }
             }
                 Button("Cancel", role: .destructive) {}
                 
@@ -264,7 +264,7 @@ struct BookDescriptionView: View {
         } message: {
             Text("Are you sure you want to issue this book")
         }
-        .navigationTitle(title)
+        .navigationTitle(book.title)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
