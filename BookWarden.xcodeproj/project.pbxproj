@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		050E607E2C18D3D8004417F3 /* AddGenreModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */; };
 		050E60802C199B3E004417F3 /* SingleIssueRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E607F2C199B3E004417F3 /* SingleIssueRequestView.swift */; };
+		050E60842C1AC7E6004417F3 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E60832C1AC7E6004417F3 /* Category.swift */; };
 		05C07F2D2C118333005B6A74 /* AdminEditLibrarySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */; };
 		05CD27062C13032E007F9729 /* SingleLibraryRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */; };
 		3D2D61D32C18427B0046C2F4 /* LibraryIssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */; };
@@ -99,6 +100,7 @@
 /* Begin PBXFileReference section */
 		050E607D2C18D3D8004417F3 /* AddGenreModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGenreModalView.swift; sourceTree = "<group>"; };
 		050E607F2C199B3E004417F3 /* SingleIssueRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleIssueRequestView.swift; sourceTree = "<group>"; };
+		050E60832C1AC7E6004417F3 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		05C07F2C2C118332005B6A74 /* AdminEditLibrarySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEditLibrarySubView.swift; sourceTree = "<group>"; };
 		05CD27052C13032E007F9729 /* SingleLibraryRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLibraryRequestView.swift; sourceTree = "<group>"; };
 		3D2D61D22C18427B0046C2F4 /* LibraryIssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryIssueView.swift; sourceTree = "<group>"; };
@@ -266,8 +268,9 @@
 				4D2041052C0A31B2004FC6B9 /* Genre.swift */,
 				4D2041072C0A32AE004FC6B9 /* Issue.swift */,
 				4D2041092C0A3308004FC6B9 /* Library.swift */,
-				4D4F96622C19602E00D8B854 /* UserDetails.swift */,
+        4D4F96622C19602E00D8B854 /* UserDetails.swift */,
 				4DCF04DF2C19CFA700122CAB /* Location.swift */,
+				050E60832C1AC7E6004417F3 /* Category.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 				4DA27A912C11B0AB00AE9055 /* UserFinesView.swift in Sources */,
 				4D2040D82C0718E2004FC6B9 /* ArrivalCardsSubView.swift in Sources */,
 				4D20410F2C0B8421004FC6B9 /* IssueManager.swift in Sources */,
+				050E60842C1AC7E6004417F3 /* Category.swift in Sources */,
 				4D8F430D2C05E92A00B3F342 /* UserView.swift in Sources */,
 				4D2040F42C09E59C004FC6B9 /* LibrarianCatalogueView.swift in Sources */,
 				05C07F2D2C118333005B6A74 /* AdminEditLibrarySubView.swift in Sources */,

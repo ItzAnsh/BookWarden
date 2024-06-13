@@ -28,7 +28,6 @@ struct AllUserResponse: Codable, Hashable {
     let _id: String
 //    let name: String
     let email: String
-    let password: String
     let role: String
     let date: String
 }

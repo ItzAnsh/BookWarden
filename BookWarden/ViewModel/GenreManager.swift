@@ -31,7 +31,6 @@ class GenreManager {
         else{
             return nil
         }
-        print(Genre(id: id, name: name, v: 0))
         return Genre(id: id, name: name, v: 0)
     }
     
