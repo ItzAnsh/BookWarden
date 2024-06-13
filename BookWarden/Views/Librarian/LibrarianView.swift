@@ -15,7 +15,7 @@ enum LibrarianTabBar {
 }
 
 struct LibrarianView: View {
-    @State private var selection: LibrarianTabBar = .Requests
+    @State private var selection: LibrarianTabBar = .Stats
     var body: some View {
         TabView(selection: $selection) {
             LibrarianStatsView()
