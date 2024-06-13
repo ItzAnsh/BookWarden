@@ -9,7 +9,7 @@ struct LibrarianCatalogueView: View {
     @State private var bookToDelete: String? = nil // Track the book to be deleted
     
     @ObservedObject var bookManager = BookManager.shared
-
+    @State private var isNavigatingToCreateBookView = false
     var filteredBooks: [Book] {
         if searchText.isEmpty {
             return bookManager.books
@@ -58,15 +58,17 @@ struct LibrarianCatalogueView: View {
             .searchable(text: $searchText)
             .safeAreaPadding(.all)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        addModalPresent = true
-                    }) {
-                        Image(systemName: "plus")
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
+                            ToolbarItem(placement: .topBarTrailing) {
+                                NavigationLink(destination: CreateBookView(), isActive: $isNavigatingToCreateBookView) {
+                                    Button(action: {
+                                        isNavigatingToCreateBookView = true
+                                    }) {
+                                        Image(systemName: "plus")
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                            }
+                        }
             .alert(isPresented: $deleteBookAlert) {
                 Alert(
                     title: Text("Confirm Delete"),
@@ -89,7 +91,7 @@ struct LibrarianCatalogueView: View {
             }
         }
 //        .sheet(isPresented: $addModalPresent) {
-//            AddBookModalView()
+//            CreateBookView()
 //        }
         .onAppear {
             let accessToken = UserDefaults.standard.string(forKey: "accessToken") ?? ""

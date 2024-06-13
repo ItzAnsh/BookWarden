@@ -1,187 +1,112 @@
-////
-////  AddBookModalView.swift
-////  BookWarden
-////
-////  Created by Ansh Bhasin on 07/06/24.
-////
-//
-//import SwiftUI
-//
-//struct AddBookModalView: View {
-//    @State var ISBN: String = ""
-//    @State var bookName: String = ""
-//    @State var bookAuthor: String = ""
-//    @State var genre: String = ""
-//    @State var language: String = ""
-//    @State var publisher: String = ""
-//    @State var length = ""
-//    @State var ISBN10: String = ""
-//    @State var ISBN13: String = ""
-//    //    @Binding var modalState: Bool
-////    @State var isShowingScanner = false
-//    
-//    @State var isbnMode = false
-//    
-//    var body: some View {
-//        NavigationView {
-//            
-//            
-//            List {
-//                
-//                Section {
-//                    QRScannerView(ISBNCode: $ISBN, ISBN10: $ISBN10, ISBN13: $ISBN13, bookName: $bookName, bookAuthor: $bookAuthor, genre: $genre, publisher: $publisher, length: $length)
-//                }
-//                
-//                
-//                Section("CREATE FROM ISBN") {
-//                    //                    Text("ISBN")
-//                    HStack {
-//                        Text("ISBN")
-//                        Spacer()
-//                        TextField("Optional", text: $ISBN)
-//                    }
-//                }
-//                
-//                Section("CREATE MANUALLY") {
-//                    HStack {
-//                        Text("Book Name")
-//                        Spacer()
-//                        TextField("Required", text: $bookName)
-//                        //                        Spacer()
-//                    }
-//                    
-//                    HStack {
-//                        Text("Author")
-//                        Spacer()
-//                        TextField("Required", text: $bookAuthor)
-//                    }
-//                    
-//                    HStack {
-//                        Text("Genre")
-//                        Spacer()
-//                        TextField("Required", text: $genre)
-//                    }
-//                    
-//                    HStack {
-//                        Text("Language")
-//                        Spacer()
-//                        TextField("Required", text: $language)
-//                    }
-//                    
-//                    HStack {
-//                        Text("Publisher")
-//                        Spacer()
-//                        TextField("Required", text: $publisher)
-//                    }
-//                    
-//                    HStack {
-//                        Text("Page length")
-//                        Spacer()
-//                        TextField("Required", text: $length)
-//                            .keyboardType(.numberPad)
-//                    }
-//                    
-//                    HStack {
-//                        Text("ISBN10")
-//                        Spacer()
-//                        TextField("Required", text: $ISBN10)
-//                    }
-//                    
-//                    HStack {
-//                        Text("ISBN13")
-//                        Spacer()
-//                        TextField("Required", text: $ISBN13)
-//                    }
-//                }
-//            }
-//            .navigationTitle("Create Book")
-//            .navigationBarTitleDisplayMode(.inline)
-//            .toolbar {
-//                ToolbarItem(placement: .topBarLeading) {
-//                    Button (action: {
-//                        //                        modalState = false
-//                    }) {
-//                        Text("Cancel")
-//                            .foregroundStyle(.blue)
-//                    }
-//                }
-//                
-//                
-//                ToolbarItem(placement: .topBarTrailing) {
-//                    NavigationLink(destination: BookQuantitySelect(
-//                    bookName: $bookName, bookAuthor: $bookAuthor, genre: $genre, language: $language, publisher: $publisher, length: $length, ISBN10: $ISBN10, ISBN13: $ISBN13
-//                    )) {
-//                        
-//                        Text("Next")
-//                            .foregroundStyle(.blue)
-//                        
-//                    }
-//                }
-//            }
-//        }
-//        .accentColor(.blue)
-//    }
-//    
-//}
-//
-//#Preview {
-//    AddBookModalView()
-//}
-//
-//struct BookQuantitySelect: View {
-//    @Binding var bookName: String
-//    @Binding var bookAuthor: String
-//    @Binding var genre: String
-//    @Binding var language: String
-//    @Binding var publisher: String
-//    @Binding var length: String
-//    @Binding var ISBN10: String
-//    @Binding var ISBN13: String
-//    @State var totalQuantity = ""
-//    @State var availableQuantity = ""
-//    var body: some View {
-//        
-//        List {
-//            Section("BOOK QUANTITY") {
-//                HStack {
-//                    Text("Total Quantity")
-//                    TextField("", text: $totalQuantity)
-//                }
-//                
-//                HStack {
-//                    Text("Available Quantity")
-//                    TextField("", text: $availableQuantity)
-//                }
-//            }
-//        }
-//        .navigationTitle("Create Book")
-//        .navigationBarTitleDisplayMode(.inline)
-//        .toolbar {
-//            //            ToolbarItem(placement: .topBarLeading) {
-//            //                Button(action: {}) {
-//            //                    Text("Cancel")
-//            //                }
-//            //                .foregroundColor(.blue)
-//            //            }
-//            
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Button(action: {
-//                    BookManager.shared.createBook(book: Book(id: "", title: bookName, author: bookAuthor, description: "", genre: genre, price: 0, publisher: "New publisher", language: language, length: Int(length) ?? 0, imageURL: URL(string: "https://m.media-amazon.com/images/I/81KeOD++BBL._AC_UL640_FMwebp_QL65_.jpg")!, isbn10: "100223445", isbn13: "1292123789012"), token: UserDefaults.standard.string(forKey: "authToken") ?? "") { result in
-//                        switch result {
-//                        case .success():
-//                            print("Added the book")
-//                        case .failure(let error):
-//                            print("Failed to create book: \(error)")
-//                        }
-//                        
-//                    }
-//                }) {
-//                    Text("Done")
-//                        .foregroundStyle(.blue)
-//                }
-//            }
-//        }
-//        //        .foregroundColor(.blue)
-//        
-//    }
-//}
+import SwiftUI
+
+struct CreateBookView: View {
+    @State private var title = ""
+    @State private var author = ""
+    @State private var description = ""
+    @State private var price = ""
+    @State private var genreid = ""
+    @State private var publisher = ""
+    @State private var language = ""
+    @State private var length = ""
+    @State private var releaseDate = ""
+    @State private var imageURL = ""
+    @State private var isbn10 = ""
+    @State private var isbn13 = ""
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+
+    @Environment(\.presentationMode) private var presentationMode
+
+    private var isFormValid: Bool {
+        !title.isEmpty && !author.isEmpty && !description.isEmpty &&
+        !price.isEmpty && !genreid.isEmpty && !publisher.isEmpty &&
+        !language.isEmpty && !length.isEmpty && !releaseDate.isEmpty &&
+        !imageURL.isEmpty && !isbn10.isEmpty && !isbn13.isEmpty
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section(header: Text("Book Details")) {
+                    TextField("Title", text: $title)
+                    TextField("Author", text: $author)
+                    TextField("Description", text: $description)
+                    TextField("Price", text: $price)
+                        .keyboardType(.numberPad)
+                    TextField("Genre ID", text: $genreid)
+                    TextField("Publisher", text: $publisher)
+                    TextField("Language", text: $language)
+                    TextField("Length", text: $length)
+                        .keyboardType(.numberPad)
+                    TextField("Release Date", text: $releaseDate)
+                    TextField("Image URL", text: $imageURL)
+                    TextField("ISBN-10", text: $isbn10)
+                    TextField("ISBN-13", text: $isbn13)
+                }
+            }
+            .navigationTitle("Add Book")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        createBook()
+                    }) {
+                        Text("Done")
+                            .foregroundStyle(.accent)
+                            .opacity(isFormValid ? 1.0 : 0.2) // Adjust opacity based on form validity
+                    }
+                    .disabled(!isFormValid) // Disable button if form is not valid
+                }
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Book Creation"), message: Text(alertMessage), dismissButton: .default(Text("OK")) {
+                    if alertMessage == "Book created successfully" {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                })
+            }
+        }
+    }
+
+    private func createBook() {
+        guard let url = URL(string: imageURL) else {
+            alertMessage = "Invalid Image URL"
+            showAlert = true
+            return
+        }
+
+        guard let priceValue = Double(price), let lengthValue = Int(length) else {
+            alertMessage = "Invalid Price or Length"
+            showAlert = true
+            return
+        }
+
+        var bookDictionary : [String: Any] = [:]
+        bookDictionary["title"] = title
+        bookDictionary["author"] = author
+        bookDictionary["description"] = description
+        bookDictionary["genre"] = genreid // Assuming Genre is created with an ID
+        bookDictionary["price"] = priceValue
+        bookDictionary["publisher"] = publisher
+        bookDictionary["language"] = language
+        bookDictionary["length"] = lengthValue
+        bookDictionary["releaseDate"] = releaseDate
+        bookDictionary["imageURL"] = imageURL
+        bookDictionary["isbn10"] = isbn10
+        bookDictionary["isbn13"] = isbn13
+
+        let token = UserDefaults.standard.string(forKey: "authToken") ?? ""
+        
+        BookManager.shared.createBook(bookDictionary: bookDictionary, token: token) { result in
+            switch result {
+            case .success(let book):
+                print(book)
+                alertMessage = "Book created successfully"
+            case .failure(let error):
+                alertMessage = "Failed to create book: \(error.localizedDescription)"
+            }
+            showAlert = true
+        }
+    }
+}

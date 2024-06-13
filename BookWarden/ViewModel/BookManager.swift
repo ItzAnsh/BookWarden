@@ -11,7 +11,6 @@ class BookManager: ObservableObject {
     static let shared = BookManager()
     
     @Published private(set) var books: [Book] = []
-    
     private init() {}
     
     func addBook(_ book: Book) throws {
@@ -268,191 +267,216 @@ class BookManager: ObservableObject {
         }.resume()
     }
     
-//    func fetchBookThroughISBN(code: String, completion: @escaping (Result<Book, Error>) -> Void) {
-//        guard code.count == 10 || code.count == 13 else {
-//            completion(.failure(NetworkError.invalidURL))
-//            return
-//        }
-//        
-//        guard let url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=isbn:\(code)") else {
-//            completion(.failure(NetworkError.invalidURL))
-//            return
-//        }
-//        
-//        var urlRequest = URLRequest(url: url)
-//        urlRequest.httpMethod = "GET"
-//        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
-//        
-//        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//            
-//            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-//                completion(.failure(NetworkError.invalidResponse))
-//                return
-//            }
-//            
-//            guard let data = data else {
-//                completion(.failure(NetworkError.noData))
-//                return
-//            }
-//            
-//            do {
-//                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//                guard let items = jsonResponse?["items"] as? [[String: Any]], let firstItem = items.first else {
-//                    completion(.failure(NetworkError.noData))
-//                    return
-//                }
-//                
-//                guard let volumeInfo = firstItem["volumeInfo"] as? [String: Any],
-//                      let id = firstItem["id"] as? String,
-//                      let title = volumeInfo["title"] as? String,
-//                      let authors = volumeInfo["authors"] as? [String], let author = authors.first,
-//                      let description = volumeInfo["description"] as? String,
-//                      let publisher = volumeInfo["publisher"] as? String,
-//                      let language = volumeInfo["language"] as? String,
-//                      let pageCount = volumeInfo["pageCount"] as? Int,
-//                      let imageLinks = volumeInfo["imageLinks"] as? [String: Any],
-//                      let imageURLString = imageLinks["thumbnail"] as? String,
-//                      let imageURL = URL(string: imageURLString),
-//                      let industryIdentifiers = volumeInfo["industryIdentifiers"] as? [[String: Any]] else {
-//                    completion(.failure(NetworkError.invalidResponse))
-//                    return
-//                }
-//                
-//                var isbn10 = ""
-//                var isbn13 = ""
-//                
-//                for identifier in industryIdentifiers {
-//                    if let type = identifier["type"] as? String, let value = identifier["identifier"] as? String {
-//                        if type == "ISBN_10" {
-//                            isbn10 = value
-//                        } else if type == "ISBN_13" {
-//                            isbn13 = value
-//                        }
-//                    }
-//                }
-//                
-//                // As genre and price are not available in the response, setting them to default values
-//                let genre = volumeInfo["categories"] as? [String] ?? ["Unknown"]
-//                let price = 0.0 // Default value as price is not in the response
-//                
-//                let book = Book(
-//                    id: id,
-//                    title: title,
-//                    author: author,
-//                    description: description,
-//                    genre: genre.first ?? "Unknown",
-//                    price: price,
-//                    publisher: publisher,
-//                    language: language,
-//                    length: pageCount,
-//                    imageURL: imageURL,
-//                    isbn10: isbn10,
-//                    isbn13: isbn13
-//                )
-//                
-//                DispatchQueue.main.async {
-//                    completion(.success(book))
-//                }
-//                
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }.resume()
-//    }
-//    
-    func createBook(book: Book, token: String, completion: @escaping (Result<Void, Error>) -> Void) {
-            if token.isEmpty {
-                print("Bad token")
-                completion(.failure(URLError(.userAuthenticationRequired)))
+    //    func fetchBookThroughISBN(code: String, completion: @escaping (Result<Book, Error>) -> Void) {
+    //        guard code.count == 10 || code.count == 13 else {
+    //            completion(.failure(NetworkError.invalidURL))
+    //            return
+    //        }
+    //
+    //        guard let url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=isbn:\(code)") else {
+    //            completion(.failure(NetworkError.invalidURL))
+    //            return
+    //        }
+    //
+    //        var urlRequest = URLRequest(url: url)
+    //        urlRequest.httpMethod = "GET"
+    //        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
+    //
+    //        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+    //            if let error = error {
+    //                completion(.failure(error))
+    //                return
+    //            }
+    //
+    //            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+    //                completion(.failure(NetworkError.invalidResponse))
+    //                return
+    //            }
+    //
+    //            guard let data = data else {
+    //                completion(.failure(NetworkError.noData))
+    //                return
+    //            }
+    //
+    //            do {
+    //                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+    //                guard let items = jsonResponse?["items"] as? [[String: Any]], let firstItem = items.first else {
+    //                    completion(.failure(NetworkError.noData))
+    //                    return
+    //                }
+    //
+    //                guard let volumeInfo = firstItem["volumeInfo"] as? [String: Any],
+    //                      let id = firstItem["id"] as? String,
+    //                      let title = volumeInfo["title"] as? String,
+    //                      let authors = volumeInfo["authors"] as? [String], let author = authors.first,
+    //                      let description = volumeInfo["description"] as? String,
+    //                      let publisher = volumeInfo["publisher"] as? String,
+    //                      let language = volumeInfo["language"] as? String,
+    //                      let pageCount = volumeInfo["pageCount"] as? Int,
+    //                      let imageLinks = volumeInfo["imageLinks"] as? [String: Any],
+    //                      let imageURLString = imageLinks["thumbnail"] as? String,
+    //                      let imageURL = URL(string: imageURLString),
+    //                      let industryIdentifiers = volumeInfo["industryIdentifiers"] as? [[String: Any]] else {
+    //                    completion(.failure(NetworkError.invalidResponse))
+    //                    return
+    //                }
+    //
+    //                var isbn10 = ""
+    //                var isbn13 = ""
+    //
+    //                for identifier in industryIdentifiers {
+    //                    if let type = identifier["type"] as? String, let value = identifier["identifier"] as? String {
+    //                        if type == "ISBN_10" {
+    //                            isbn10 = value
+    //                        } else if type == "ISBN_13" {
+    //                            isbn13 = value
+    //                        }
+    //                    }
+    //                }
+    //
+    //                // As genre and price are not available in the response, setting them to default values
+    //                let genre = volumeInfo["categories"] as? [String] ?? ["Unknown"]
+    //                let price = 0.0 // Default value as price is not in the response
+    //
+    //                let book = Book(
+    //                    id: id,
+    //                    title: title,
+    //                    author: author,
+    //                    description: description,
+    //                    genre: genre.first ?? "Unknown",
+    //                    price: price,
+    //                    publisher: publisher,
+    //                    language: language,
+    //                    length: pageCount,
+    //                    imageURL: imageURL,
+    //                    isbn10: isbn10,
+    //                    isbn13: isbn13
+    //                )
+    //
+    //                DispatchQueue.main.async {
+    //                    completion(.success(book))
+    //                }
+    //
+    //            } catch {
+    //                completion(.failure(error))
+    //            }
+    //        }.resume()
+    //    }
+    //
+    func createBook(bookDictionary: [String: Any], token: String, completion: @escaping (Result<Book, Error>) -> Void) {
+        if token.isEmpty {
+            print("Bad token")
+            completion(.failure(URLError(.userAuthenticationRequired)))
+            return
+        }
+        
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/createBook") else {
+            print("Invalid URL")
+            completion(.failure(URLError(.badURL)))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        
+        do {
+            // Convert dictionary to JSON Data
+            print("paarsing")
+            let jsonData = try JSONSerialization.data(withJSONObject: bookDictionary, options: .prettyPrinted)
+            request.httpBody = jsonData
+            print("parsed ")
+        } catch {
+            print("Error converting dictionary to JSON: \(error.localizedDescription)")
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
                 return
             }
-
-            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/createBook") else {
-                print("Invalid URL")
-                completion(.failure(URLError(.badURL)))
-                return
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 200 {
+                    guard let data = data else {
+                        DispatchQueue.main.async {
+                            completion(.failure(URLError(.badServerResponse)))
+                        }
+                        return
+                    }
+                    do {
+                        // Convert JSON Data to Dictionary
+                        print("respons parsing")
+                        if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            print("response pared")
+                            guard let book = BookManager.shared.parseBook(bookDictionary: dictionary) else {
+                                completion(.failure(URLError(.cannotParseResponse)))
+                                return
+                            }
+                            DispatchQueue.main.async {
+                                completion(.success(book))
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion(.failure(URLError(.cannotParseResponse)))
+                            }
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            completion(.failure(error))
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let serverError = NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [
+                            "response": httpResponse,
+                            "data": data ?? Data()
+                        ])
+                        completion(.failure(serverError))
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(.failure(URLError(.badServerResponse)))
+                }
             }
-
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-            do {
-                let jsonData = try JSONEncoder().encode(book)
-//                jsonData.append
-                request.httpBody = jsonData
-            } catch {
+        }.resume()
+    }
+    func deleteBook(bookID: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/deleteBook/\(bookID)") else {
+            completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        print(url)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
+        print("Request \(request)")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
                 completion(.failure(error))
                 return
             }
-
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                    return
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                DispatchQueue.main.async {
+                    self.books.removeAll { $0.id == bookID }
+                    print("Domne")
+                    completion(.success(()))
+                    print("Book Deleted")
                 }
-
-                if let httpResponse = response as? HTTPURLResponse {
-                    if httpResponse.statusCode == 200 {
-                        DispatchQueue.main.async {
-                            self.books.append(book)
-                            completion(.success(()))
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            let serverError = NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [
-                                "response": httpResponse,
-                                "data": data ?? Data()
-                            ])
-                            completion(.failure(serverError))
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        completion(.failure(URLError(.badServerResponse)))
-                    }
-                }
-            }.resume()
-        }
-    
-    func deleteBook(bookID: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
-            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/deleteBook/\(bookID)") else {
-                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
-                return
+            } else {
+                //                    print(httpResponse.statusCode)
+                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to delete book"])))
             }
-        print(url)
-
-            var request = URLRequest(url: url)
-            request.httpMethod = "DELETE"
-        request.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
-        print("Request \(request)")
-
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    DispatchQueue.main.async {
-                        self.books.removeAll { $0.id == bookID }
-                        print("Domne")
-                        completion(.success(()))
-                        print("Book Deleted")
-                    }
-                } else {
-//                    print(httpResponse.statusCode)
-                    completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to delete book"])))
-                }
-            }.resume()
-        }
+        }.resume()
+    }
 }
 
 var bookManager = BookManager.shared
