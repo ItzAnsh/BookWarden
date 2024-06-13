@@ -50,6 +50,7 @@
 		4D2041152C0B84F4004FC6B9 /* WishlistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2041142C0B84F4004FC6B9 /* WishlistManager.swift */; };
 		4D2041172C0B8528004FC6B9 /* FineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2041162C0B8528004FC6B9 /* FineManager.swift */; };
 		4D2041192C0B8547004FC6B9 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2041182C0B8547004FC6B9 /* UserManager.swift */; };
+		4D4F96632C19602E00D8B854 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4F96622C19602E00D8B854 /* UserDetails.swift */; };
 		4D5ADAA82C04F0B1002EAC6A /* UserHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ADAA72C04F0B1002EAC6A /* UserHomeView.swift */; };
 		4D5ADAAA2C04F0C5002EAC6A /* LibrarianStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ADAA92C04F0C5002EAC6A /* LibrarianStatsView.swift */; };
 		4D5ADAAC2C04F0D2002EAC6A /* AdminHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ADAAB2C04F0D2002EAC6A /* AdminHomeView.swift */; };
@@ -74,6 +75,7 @@
 		4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */; };
 		4DCD0F782C0F82AD003CB23F /* FinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F772C0F82AD003CB23F /* FinesView.swift */; };
 		4DCD0F7A2C0F82DE003CB23F /* BookFineCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */; };
+		4DCF04E02C19CFA700122CAB /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCF04DF2C19CFA700122CAB /* Location.swift */; };
 		C03E661C2C1AABAB00827D4C /* LibrarianAddUserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E661B2C1AABAB00827D4C /* LibrarianAddUserDetailsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -141,6 +143,7 @@
 		4D2041142C0B84F4004FC6B9 /* WishlistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistManager.swift; sourceTree = "<group>"; };
 		4D2041162C0B8528004FC6B9 /* FineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineManager.swift; sourceTree = "<group>"; };
 		4D2041182C0B8547004FC6B9 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		4D4F96622C19602E00D8B854 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		4D5ADAA72C04F0B1002EAC6A /* UserHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeView.swift; sourceTree = "<group>"; };
 		4D5ADAA92C04F0C5002EAC6A /* LibrarianStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarianStatsView.swift; sourceTree = "<group>"; };
 		4D5ADAAB2C04F0D2002EAC6A /* AdminHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminHomeView.swift; sourceTree = "<group>"; };
@@ -165,6 +168,7 @@
 		4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuedBooksSSView.swift; sourceTree = "<group>"; };
 		4DCD0F772C0F82AD003CB23F /* FinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinesView.swift; sourceTree = "<group>"; };
 		4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFineCard.swift; sourceTree = "<group>"; };
+		4DCF04DF2C19CFA700122CAB /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		C03E661B2C1AABAB00827D4C /* LibrarianAddUserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarianAddUserDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -262,6 +266,8 @@
 				4D2041052C0A31B2004FC6B9 /* Genre.swift */,
 				4D2041072C0A32AE004FC6B9 /* Issue.swift */,
 				4D2041092C0A3308004FC6B9 /* Library.swift */,
+				4D4F96622C19602E00D8B854 /* UserDetails.swift */,
+				4DCF04DF2C19CFA700122CAB /* Location.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -629,6 +635,7 @@
 				4D2040EA2C08DCCE004FC6B9 /* WishListCardView.swift in Sources */,
 				4D5ADAB32C04F776002EAC6A /* UserWishlistView.swift in Sources */,
 				4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */,
+				4DCF04E02C19CFA700122CAB /* Location.swift in Sources */,
 				4DA27A8D2C11B06C00AE9055 /* IssuedBooks.swift in Sources */,
 				4D2040CF2C064542004FC6B9 /* UserRecommendationView.swift in Sources */,
 				4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */,
@@ -641,6 +648,7 @@
 				4D2040D22C065BFE004FC6B9 /* CategoryComponent.swift in Sources */,
 				4DA27A952C124E9600AE9055 /* AddBookModalView.swift in Sources */,
 				4DA27A972C1303A500AE9055 /* QRScannerView.swift in Sources */,
+				4D4F96632C19602E00D8B854 /* UserDetails.swift in Sources */,
 				4DA27A932C11B0D800AE9055 /* FinesViewCard.swift in Sources */,
 				4D2040E32C0798CA004FC6B9 /* CategorySubView.swift in Sources */,
 				4D2040ED2C08E516004FC6B9 /* Login.swift in Sources */,
@@ -842,7 +850,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BookWarden/Preview Content\"";
-				DEVELOPMENT_TEAM = 6YY89N3X8Y;
+				DEVELOPMENT_TEAM = 7GVS3WCNXX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "qrcode scan";
@@ -856,7 +864,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Manan27mg.BookWarden;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AnshBhasin.BookWarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -872,7 +880,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BookWarden/Preview Content\"";
-				DEVELOPMENT_TEAM = 6YY89N3X8Y;
+				DEVELOPMENT_TEAM = 7GVS3WCNXX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "qrcode scan";
@@ -886,7 +894,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Manan27mg.BookWarden;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AnshBhasin.BookWarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

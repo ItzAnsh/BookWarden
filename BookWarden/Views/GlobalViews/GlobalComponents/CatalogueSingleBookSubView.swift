@@ -7,18 +7,18 @@ enum CatalogueTypes {
 
 struct CatalogueSingleBookSubView: View {
     @Binding var alertState: Bool
-    var id: String
-    var image: URL
+    var book: Book
     var categoryType: CatalogueTypes = .member
     var available: Bool = true
-    var title: String
-    var author: String
+    
+//    @Binding var bookLibrary: String?
     @Binding var bookToDelete: String?
+    @Binding var currBook: Book
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            NavigationLink(destination: BookDescriptionView(title: title, image: image, author: author)) {
-                AsyncImage(url: image) { image in
+            NavigationLink(destination: BookDescriptionView(book: book)) {
+                AsyncImage(url: book.imageURL) { image in
                     image
                         .resizable()
                         .frame(width: 161, height: 201)
@@ -32,6 +32,13 @@ struct CatalogueSingleBookSubView: View {
                 HStack {
                     Button(action: {
                         // Action for the Request button
+                        if categoryType == .member {
+                            alertState = true
+                            currBook = book
+                        } else {
+                            
+                            bookToDelete = book.id
+                        }
                     }) {
                         Text(categoryType == .librarian ? "Request" : "ISSUE")
                     }
@@ -46,8 +53,12 @@ struct CatalogueSingleBookSubView: View {
                     Spacer()
                     
                     Button(action: {
-                        alertState = true
-                        bookToDelete = id
+                        if categoryType == .member {
+                            
+                        } else {
+                            alertState = true
+                            bookToDelete = book.id
+                        }
                     }) {
                         Image(systemName: categoryType == .librarian ? "trash.fill" : "ellipsis")
                             .font(.system(size: 17))
