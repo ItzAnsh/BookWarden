@@ -11,10 +11,11 @@ struct Library: Identifiable, Hashable, Codable{
     private var maxBooks: Int
     private var fineInterest: Int
     private var librarian: User
+    private var adminId: String
     private var books: [Book]?
     
     enum CodingKeys: String, CodingKey {
-        case id
+        case id = "_id"
         case name
         case location
         case contactNo
@@ -25,9 +26,10 @@ struct Library: Identifiable, Hashable, Codable{
         case fineInterest
         case librarian
         case books
+        case adminId
     }
     
-    init(id: String, name: String, location: String, contactNo: String, contactEmail: String,totalBooks: Int, issuePeriod: Int, maxBooks: Int,fineInterest: Int, librarian: User, books: [Book]? = nil) {
+    init(id: String, name: String, location: String, contactNo: String, contactEmail: String,totalBooks: Int, issuePeriod: Int, maxBooks: Int,fineInterest: Int, librarian: User, books: [Book]? = nil, adminId: String) {
         self.id = id
         self.name = name
         self.location = location
@@ -39,6 +41,7 @@ struct Library: Identifiable, Hashable, Codable{
         self.fineInterest = fineInterest
         self.librarian = librarian
         self.books = books
+        self.adminId = adminId
     }
     
     // Getters

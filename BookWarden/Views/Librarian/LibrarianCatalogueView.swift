@@ -34,22 +34,22 @@ struct LibrarianCatalogueView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 35) {
-                    ForEach(0..<self.newArr.count, id: \.self) { index in
-                        HStack(spacing: 24) {
-                            ForEach(newArr[index], id: \.id) { book in
-                                CatalogueSingleBookSubView(
-                                    alertState: $deleteBookAlert,
-                                    id: book.id,
-                                    image: book.imageURL,
-                                    categoryType: .librarian,
-                                    title: book.title,
-                                    author: book.author,
-                                    bookToDelete: $bookToDelete
-                                )
-                            }
-                        }
-                        .safeAreaPadding(.horizontal)
-                    }
+//                    ForEach(0..<self.newArr.count, id: \.self) { index in
+//                        HStack(spacing: 24) {
+//                            ForEach(newArr[index], id: \.id) { book in
+//                                CatalogueSingleBookSubView(
+//                                    alertState: $deleteBookAlert,
+//                                    id: book.id,
+//                                    image: book.imageURL,
+//                                    categoryType: .librarian,
+//                                    title: book.title,
+//                                    author: book.author,
+//                                    bookToDelete: $bookToDelete
+//                                )
+//                            }
+//                        }
+//                        .safeAreaPadding(.horizontal)
+//                    }
                 }
                 .padding(.horizontal)
             }
@@ -88,9 +88,9 @@ struct LibrarianCatalogueView: View {
                 )
             }
         }
-//        .sheet(isPresented: $addModalPresent) {
-//            AddBookModalView()
-//        }
+        .sheet(isPresented: $addModalPresent) {
+            AddBookModalView()
+        }
         .onAppear {
             let accessToken = UserDefaults.standard.string(forKey: "accessToken") ?? ""
             bookManager.fetchBooksLibrarian(accessToken: accessToken) { result in

@@ -17,6 +17,7 @@ struct Book: Identifiable, Codable, Hashable {
     var imageURL: URL
     let isbn10: String
     let isbn13: String
+    var location: [Location]
     let v: Int
     
     enum CodingKeys: String, CodingKey {
@@ -32,6 +33,7 @@ struct Book: Identifiable, Codable, Hashable {
             case imageURL
             case isbn10
             case isbn13
+            case location
             case v = "__v"
         }
     
@@ -49,6 +51,7 @@ struct Book: Identifiable, Codable, Hashable {
         self.isbn10 = book.isbn10
         self.isbn13 = book.isbn13
         self.v = book.v
+        self.location = book.location
     }
     
     init(from decoder: any Decoder) throws {
@@ -66,9 +69,10 @@ struct Book: Identifiable, Codable, Hashable {
         self.isbn10 = try container.decode(String.self, forKey: .isbn10)
         self.isbn13 = try container.decode(String.self, forKey: .isbn13)
         self.v = try container.decode(Int.self, forKey: .v)
+        self.location = try container.decode([Location].self, forKey: .location)
     }
     
-    init(id: String, title: String, author: String, description: String, genre: Genre, price: Double, publisher: String, language: String, length: Int, imageURL: URL, isbn10: String, isbn13: String, v: Int) {
+    init(id: String, title: String, author: String, description: String, genre: Genre, price: Double, publisher: String, language: String, length: Int, imageURL: URL, isbn10: String, isbn13: String, v: Int, location: [Location]) {
         self.id = id
         self.title = title
         self.author = author
@@ -82,5 +86,6 @@ struct Book: Identifiable, Codable, Hashable {
         self.isbn10 = isbn10
         self.isbn13 = isbn13
         self.v = v
+        self.location = location
     }
 }

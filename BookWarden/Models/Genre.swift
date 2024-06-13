@@ -1,5 +1,5 @@
 import Foundation
-struct Genre: Codable, Hashable {
+struct Genre: Codable, Hashable, Identifiable {
     var id: String
     var name: String
     var v: Int

@@ -74,6 +74,7 @@
 		4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */; };
 		4DCD0F782C0F82AD003CB23F /* FinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F772C0F82AD003CB23F /* FinesView.swift */; };
 		4DCD0F7A2C0F82DE003CB23F /* BookFineCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */; };
+		4DCF04E02C19CFA700122CAB /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCF04DF2C19CFA700122CAB /* Location.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,6 +165,7 @@
 		4DCD0F752C0F828D003CB23F /* IssuedBooksSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuedBooksSSView.swift; sourceTree = "<group>"; };
 		4DCD0F772C0F82AD003CB23F /* FinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinesView.swift; sourceTree = "<group>"; };
 		4DCD0F792C0F82DE003CB23F /* BookFineCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFineCard.swift; sourceTree = "<group>"; };
+		4DCF04DF2C19CFA700122CAB /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,6 +263,7 @@
 				4D2041072C0A32AE004FC6B9 /* Issue.swift */,
 				4D2041092C0A3308004FC6B9 /* Library.swift */,
 				4D4F96622C19602E00D8B854 /* UserDetails.swift */,
+				4DCF04DF2C19CFA700122CAB /* Location.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -626,6 +629,7 @@
 				4D2040EA2C08DCCE004FC6B9 /* WishListCardView.swift in Sources */,
 				4D5ADAB32C04F776002EAC6A /* UserWishlistView.swift in Sources */,
 				4D1E20CB2BFDB3670023B910 /* ContentView.swift in Sources */,
+				4DCF04E02C19CFA700122CAB /* Location.swift in Sources */,
 				4DA27A8D2C11B06C00AE9055 /* IssuedBooks.swift in Sources */,
 				4D2040CF2C064542004FC6B9 /* UserRecommendationView.swift in Sources */,
 				4DCD0F762C0F828D003CB23F /* IssuedBooksSSView.swift in Sources */,
