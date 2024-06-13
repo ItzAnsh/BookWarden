@@ -117,6 +117,24 @@ struct UserLibraryView: View {
                     print("Failed to fetch books: \(error.localizedDescription)")
                 }
             }
+            bookManager.fetchPreferredBooks(accessToken: accessToken) { result in
+                switch result {
+                case .success(let books):
+                    print("Fetched preferred books:")
+                    books.forEach { print($0.title) }
+                case .failure(let error):
+                    print("Error fetching preferred books: \(error.localizedDescription)")
+                }
+            }
+            bookManager.fetchRecentBooks(accessToken: accessToken) { result in
+                switch result {
+                case .success(let books):
+                    print("Fetched Recent books:")
+                    books.forEach { print($0.title) }
+                case .failure(let error):
+                    print("Error fetching recent books: \(error.localizedDescription)")
+                }
+            }
         }
     }
 }
