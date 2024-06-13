@@ -656,8 +656,9 @@ class BookManager: ObservableObject {
     }
     
     func issueBook(bookId: String, libraryId: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let url = URL(string: "\(apiUrl)/users/issueBook") else {
+        guard let url = URL(string: "http://localhost:3000/api/users/issueBook") else {
             completion(.failure(NetworkError.invalidURL))
+            print("invalid url")
             return
         }
         
@@ -665,6 +666,14 @@ class BookManager: ObservableObject {
         request.httpMethod = "POST"
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body = ["bookId": bookId, "libraryId": libraryId]
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+            print(String(data: request.httpBody ?? Data(), encoding: .utf8))
+        } catch {
+            print("error found")
+        }
         
         URLSession.shared.dataTask(with: request) {
             data, response, error in

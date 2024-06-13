@@ -13,7 +13,7 @@ struct CatalogueSingleBookSubView: View {
     
 //    @Binding var bookLibrary: String?
     @Binding var bookToDelete: String?
-    @Binding var currBook: Book
+    @Binding var currBook: Book?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -32,6 +32,7 @@ struct CatalogueSingleBookSubView: View {
                 HStack {
                     Button(action: {
                         // Action for the Request button
+                        currBook = book
                         if categoryType == .member {
                             alertState = true
                             currBook = book
