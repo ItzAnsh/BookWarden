@@ -26,7 +26,7 @@ struct TokenResponse: Decodable {
 
 struct AllUserResponse: Codable, Hashable {
     let _id: String
-    let name: String
+//    let name: String
     let email: String
     let password: String
     let role: String
@@ -103,97 +103,101 @@ class UserManager: ObservableObject {
     let url1 = "https://bookwarden-server.onrender.com/api/librarian/getAllUsers"
     
     func fetchAllUsers() {
-        guard let url = URL(string: url1) else {
-            print("Invalid URL")
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjE5YjA1ZTQ2ZmE2ZGJhMmFlYjBiOCIsImlhdCI6MTcxNzk5MzA3MSwiZXhwIjoxNzE4NTk3ODcxfQ.9VVBZlByZFl3aezgZZWP4qYEAJmiAYmXeCr5sUjwBA4"
-        
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print("Error fetching data: \(String(describing: error))")
-                return
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
-                print("Error: HTTP status code \(httpResponse.statusCode)")
-                return
-            }
-            
-            do {
-                let users = try JSONDecoder().decode([AllUserResponse].self, from: data)
-                DispatchQueue.main.async {
-                    self.allUsers = users
-                    print("Users fetched and updated: \(self.allUsers)")
+            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/getAllUsers") else { return }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            let token = UserDefaults.standard.string(forKey: "authToken") ?? ""
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error: \(error)")
+                    return
                 }
-            } catch {
-                print("Error decoding data: \(error)")
-            }
+
+                if let data = data {
+                    do {
+                        let decodedResponse = try JSONDecoder().decode([AllUserResponse].self, from: data)
+                        DispatchQueue.main.async {
+                            self.allUsers = decodedResponse
+                        }
+                    } catch {
+                        print("Error decoding response: \(error)")
+                        if let dataString = String(data: data, encoding: .utf8) {
+                            print("Response data: \(dataString)")
+                        }
+                    }
+                }
+            }.resume()
         }
-        
-        task.resume()
-    }
     
-    func addUser(name: String, email: String, completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/createUser") else {
-            completion(false)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let token = UserDefaults.standard.string(forKey: "authToken") ?? ""
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        let user = ["name": name, "email": email, "password": "defaultPassword", "role": "user"]
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: user, options: [])
-        } catch {
-            print("Error serializing JSON: \(error)")
-            completion(false)
-            return
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(String(describing: error))")
+    func addUser(userMail: String, completion: @escaping (Bool) -> Void) {
+            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/createMultipleUser") else {
                 completion(false)
                 return
             }
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                if !(200...299).contains(httpResponse.statusCode) {
-                    print("Error: HTTP status code \(httpResponse.statusCode)")
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let token = UserDefaults.standard.string(forKey: "authToken") ?? ""
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        let user = ["users": [["email": userMail]]]
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: user, options: [])
+//                print(String(data: request, encoding: .utf8))
+                guard let httpBody = request.httpBody else {
+                    print("")
+                    return
+                }
+                print(String(data: httpBody, encoding: .utf8))
+            } catch {
+                print("Error serializing JSON: \(error)")
+                completion(false)
+                return
+            }
+
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error: \(error)")
                     completion(false)
                     return
                 }
-            }
-            
-            if let data = data {
-                do {
-                    let responseData = try JSONSerialization.jsonObject(with: data, options: [])
-                    print("Response: \(responseData)")
-                } catch {
-                    print("Error parsing response: \(error)")
-                    completion(false)
-                    return
+
+                if let httpResponse = response as? HTTPURLResponse {
+                    if !(200...299).contains(httpResponse.statusCode) {
+                        print("Error: HTTP status code \(httpResponse.statusCode)")
+                        if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                            print("Response data: \(dataString)")
+                        }
+                        completion(false)
+                        return
+                    }
                 }
-            }
-            
-            DispatchQueue.main.async {
-                self.fetchAllUsers() // Refresh the user list
-            }
-            completion(true)
-        }.resume()
-    }
+
+                if let data = data {
+                    do {
+                        let responseData = try JSONSerialization.jsonObject(with: data, options: [])
+                        print("Response: \(responseData)")
+                    } catch {
+                        print("Error parsing response: \(error)")
+                        if let dataString = String(data: data, encoding: .utf8) {
+                            print("Response data: \(dataString)")
+                        }
+                        completion(false)
+                        return
+                    }
+                }
+
+                DispatchQueue.main.async {
+                    self.fetchAllUsers() // Refresh the user list
+                }
+                completion(true)
+            }.resume()
+        }
     
     func parseUser(userDictionary: [String: Any]) -> User? {
         guard let id = userDictionary["_id"] as? String,

@@ -133,7 +133,7 @@ struct LibrarianRequestsView: View {
                     case .success(let fetchedIssues):
                         self.issues = fetchedIssues
                     case .failure(let error):
-                        print("Error fetching issues: \(error.localizedDescription)")
+                        print("Error fetching issues: \(error)")
                     }
                 }
             }

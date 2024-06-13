@@ -4,57 +4,62 @@ struct LibrarianUsersView: View {
     @ObservedObject var viewModel = UserManager.shared
     @State private var searchText = ""
     @State private var isPresentingAddUserView = false
-    @State private var users: [AllUserResponse] = []
 
     var filteredUsers: [AllUserResponse] {
         if searchText.isEmpty {
             return viewModel.allUsers
         } else {
-            return viewModel.allUsers.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+            return viewModel.allUsers.filter { $0.email.localizedCaseInsensitiveContains(searchText) }
         }
     }
 
     var groupedUsers: [String: [AllUserResponse]] {
-        Dictionary(grouping: filteredUsers, by: { String($0.name.prefix(1)) })
+        Dictionary(grouping: filteredUsers, by: { String($0.email.prefix(1)) })
+    }
+
+    var sortedKeys: [String] {
+        groupedUsers.keys.sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
     }
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(groupedUsers.keys.sorted(), id: \.self) { key in
-                    Section(header: Text(key)
-                        .foregroundColor(.gray)
-                        .font(.headline)) {
-                            usersInSection(for: key)
-                        }
-                }
-            }
-            .listStyle(PlainListStyle())
-            .navigationTitle("Users")
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isPresentingAddUserView = true
-                    }) {
-                        Image(systemName: "plus")
+        NavigationView {
+            VStack {
+                List {
+                    ForEach(sortedKeys, id: \.self) { key in
+                        Section(header: Text(key)
+                            .foregroundColor(.gray)
+                            .font(.headline)) {
+                                usersInSection(for: key)
+                            }
                     }
                 }
-            }
-            .sheet(isPresented: $isPresentingAddUserView) {
-                LibrarianAddUserDetailsView(addUserCompletion: { name, email in
-                    addUser(name: name, email: email)
+                .listStyle(PlainListStyle())
+                .navigationTitle("Users")
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            isPresentingAddUserView = true
+                        }) {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+                .sheet(isPresented: $isPresentingAddUserView, content: {
+                    LibrarianAddUserDetailsView(addUserCompletion: { emails in
+                        addUsers(emails: emails)
+                    })
                 })
             }
-        }
-        .onAppear {
-            viewModel.fetchAllUsers()
+            .onAppear {
+                viewModel.fetchAllUsers()
+            }
         }
     }
 
     func usersInSection(for key: String) -> some View {
-        ForEach(groupedUsers[key]!, id: \.self) { user in
-            NavigationLink(destination: UserDetailView(userName: user.name)) {
+        ForEach(groupedUsers[key] ?? [], id: \.email) { user in
+            NavigationLink(destination: UserDetailView(userMail: user.email)) {
                 VStack(alignment: .leading) {
                     Text(user.email)
                         .padding(.vertical, 0)
@@ -63,15 +68,16 @@ struct LibrarianUsersView: View {
         }
     }
 
-    func addUser(name: String, email: String) {
-        viewModel.addUser(name: name, email: email) { success in
-            if success {
-                // If user is successfully added, update the list of users
-                let newUser = AllUserResponse(_id: UUID().uuidString, name: name, email: email, password: "", role: "", date: "")
-                users.append(newUser)
-            } else {
-                // Handle failure to add user
-                // You can show an alert or handle it based on your requirement
+    func addUsers(emails: [String]) {
+        for email in emails {
+            viewModel.addUser(userMail: email) { success in
+                if success {
+                    // If user is successfully added, fetch all users again to refresh the list
+                    viewModel.fetchAllUsers()
+                } else {
+                    // Handle failure to add user
+                    // You can show an alert or handle it based on your requirement
+                }
             }
         }
     }
