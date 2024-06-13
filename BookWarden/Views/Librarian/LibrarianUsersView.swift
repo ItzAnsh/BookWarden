@@ -1,17 +1,11 @@
-//
-//  LibrarianUsersView.swift
-//  BookWarden
-//
-//  Created by Ansh Bhasin on 31/05/24.
-//
-
 import SwiftUI
 
 struct LibrarianUsersView: View {
     @ObservedObject var viewModel = UserManager.shared
     @State private var searchText = ""
-    @State private var selectedUserName: String? = nil
-    
+    @State private var isPresentingAddUserView = false
+    @State private var users: [AllUserResponse] = []
+
     var filteredUsers: [AllUserResponse] {
         if searchText.isEmpty {
             return viewModel.allUsers
@@ -19,10 +13,11 @@ struct LibrarianUsersView: View {
             return viewModel.allUsers.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
-    
+
     var groupedUsers: [String: [AllUserResponse]] {
         Dictionary(grouping: filteredUsers, by: { String($0.name.prefix(1)) })
     }
+
     var body: some View {
         NavigationStack {
             List {
@@ -34,34 +29,50 @@ struct LibrarianUsersView: View {
                         }
                 }
             }
-//            .edgesIgnoringSafeArea(.all)
             .listStyle(PlainListStyle())
             .navigationTitle("Users")
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-            
-        }
-        
-//        .preferredColorScheme(.dark) // Ensure the app is always in dark mode
-        .onAppear {
-            print("Fetching users...")
-            viewModel.fetchAllUsers()
-        }
-        
-    }
-    
-    func usersInSection(for key: String) -> some View {
-            ForEach(groupedUsers[key]!, id: \.self) { user in
-                NavigationLink(destination: UserDetailView(userName: user.name)) {
-                    VStack(alignment: .leading) {
-                        Text(user.name)
-                            .padding(.vertical, 0)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isPresentingAddUserView = true
+                    }) {
+                        Image(systemName: "plus")
                     }
                 }
             }
+            .sheet(isPresented: $isPresentingAddUserView) {
+                LibrarianAddUserDetailsView(addUserCompletion: { name, email in
+                    addUser(name: name, email: email)
+                })
+            }
         }
+        .onAppear {
+            viewModel.fetchAllUsers()
+        }
+    }
 
-}
+    func usersInSection(for key: String) -> some View {
+        ForEach(groupedUsers[key]!, id: \.self) { user in
+            NavigationLink(destination: UserDetailView(userName: user.name)) {
+                VStack(alignment: .leading) {
+                    Text(user.email)
+                        .padding(.vertical, 0)
+                }
+            }
+        }
+    }
 
-#Preview {
-    LibrarianUsersView()
+    func addUser(name: String, email: String) {
+        viewModel.addUser(name: name, email: email) { success in
+            if success {
+                // If user is successfully added, update the list of users
+                let newUser = AllUserResponse(_id: UUID().uuidString, name: name, email: email, password: "", role: "", date: "")
+                users.append(newUser)
+            } else {
+                // Handle failure to add user
+                // You can show an alert or handle it based on your requirement
+            }
+        }
+    }
 }
