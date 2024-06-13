@@ -28,6 +28,15 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Navigation bar setup
+        self.title = "Scan QR Code"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Back",
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
+
         captureSession = AVCaptureSession()
 
         guard let captureDevice = AVCaptureDevice.default(for: .video) else {
@@ -91,7 +100,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         print("QR Code: \(code)")
         qrCodeString.wrappedValue = code
         qrCodeAlert.wrappedValue = true
-        
+
         // Dismiss the view controller or do any additional handling here
         self.dismiss(animated: true, completion: nil)
     }
@@ -103,6 +112,10 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
+
+    @objc func backButtonTapped() {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 import SwiftUI
@@ -111,9 +124,11 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var qrCodeAlert: Bool
     @Binding var qrCodeString: String?
 
-    func makeUIViewController(context: Context) -> CameraViewController {
-        return CameraViewController(qrCodeAlert: $qrCodeAlert, qrCodeString: $qrCodeString)
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let cameraViewController = CameraViewController(qrCodeAlert: $qrCodeAlert, qrCodeString: $qrCodeString)
+        let navigationController = UINavigationController(rootViewController: cameraViewController)
+        return navigationController
     }
 
-    func updateUIViewController(_ uiViewController: CameraViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {}
 }
