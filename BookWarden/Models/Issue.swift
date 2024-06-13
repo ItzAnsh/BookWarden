@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Issue: Codable, Hashable {
-    private let id: String
+struct Issue: Codable, Hashable,Identifiable {
+    let id: String
     private let book: Book
     private let user: User
     private let issuedDate: Date
