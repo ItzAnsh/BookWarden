@@ -11,6 +11,7 @@ class BookManager: ObservableObject {
     static let shared = BookManager()
     
     @Published private(set) var books: [Book] = []
+    @Published private(set) var categories: [Category] = []
     
     private init() {}
     
@@ -35,6 +36,7 @@ class BookManager: ObservableObject {
         case invalidResponse
         case noData
     }
+    
     
     func postDataRequest(accessToken: String, data: [String: Any], completion: @escaping (Result<Data, Error>) -> Void) {
         guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/createBook") else {
@@ -74,7 +76,150 @@ class BookManager: ObservableObject {
             completion(.success(responseData))
         }.resume()
     }
+    func fetchPreferredBooks(accessToken: String, completion: @escaping (Result<[Book], Error>) -> Void) {
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/home") else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken")!)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                if let preferredBooksArray = json?["PreferredBooks"] as? [[String: Any]] {
+                    let preferredBooks = preferredBooksArray.compactMap { self.parseBook(bookDictionary: $0) }
+                    
+                    DispatchQueue.main.async {
+                        completion(.success(preferredBooks))
+                    }
+                } else {
+                    completion(.failure(NetworkError.noData))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
     
+    func fetchRecentBooks(accessToken: String, completion: @escaping (Result<[Book], Error>) -> Void) {
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/home") else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken")!)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                if let recentBooksArray = json?["RecentBooks"] as? [[String: Any]] {
+                    let recentBooks = recentBooksArray.compactMap { self.parseBook(bookDictionary: $0) }
+                    
+                    DispatchQueue.main.async {
+                        completion(.success(recentBooks))
+                    }
+                } else {
+                    completion(.failure(NetworkError.noData))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+    func fetchCategories(accessToken: String, completion: @escaping (Result<[Category], Error>) -> Void) {
+            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/home") else {
+                completion(.failure(NetworkError.invalidURL))
+                return
+            }
+            
+            var urlRequest = URLRequest(url: url)
+            urlRequest.httpMethod = "GET"
+            urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
+            
+            URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    completion(.failure(NetworkError.invalidResponse))
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NetworkError.noData))
+                    return
+                }
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                    if let categoriesDictionary = json?["Categories"] as? [String: Any],
+                       let allGenresArray = categoriesDictionary["AllGenres"] as? [[String: Any]] {
+                        let categories = allGenresArray.compactMap { self.parseCategory(categoryDictionary: $0) }
+                        
+                        DispatchQueue.main.async {
+                            self.categories = categories
+                            completion(.success(categories))
+                        }
+                    } else {
+                        completion(.failure(NetworkError.noData))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
+    
+    
+    private func parseCategory(categoryDictionary: [String: Any]) -> Category? {
+            guard let id = categoryDictionary["_id"] as? String,
+                  let name = categoryDictionary["name"] as? String,
+                  let booksArray = categoryDictionary["books"] as? [[String: Any]] else {
+                print("Category data invalid")
+                return nil
+            }
+            
+            let books = booksArray.compactMap { self.parseBook(bookDictionary: $0) }
+            
+            return Category(id: id, name: name, books: books)
+        }
     func fetchBooks(accessToken: String, completion: @escaping (Result<[Book], Error>) -> Void) {
         guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/getBooks") else {
             completion(.failure(NetworkError.invalidURL))
