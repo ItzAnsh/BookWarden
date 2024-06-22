@@ -38,11 +38,13 @@ struct UserHomeView: View {
                                     ForEach(chunkBooks(recentBooks, chunkSize: 3), id: \.self) { chunk in
                                         VStack(spacing: 19) {
                                             ForEach(chunk, id: \.id) { book in
-                                                RecentBooksCard(
-                                                    image: book.imageURL,
-                                                    name: book.title,
-                                                    authorName: book.author
-                                                )
+                                                NavigationLink(destination: BookDescriptionView(book: book)) {
+                                                    RecentBooksCard(
+                                                        image: book.imageURL,
+                                                        name: book.title,
+                                                        authorName: book.author
+                                                    )
+                                                }
                                             }
                                         }
                                     }

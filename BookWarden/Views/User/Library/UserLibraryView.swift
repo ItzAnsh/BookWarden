@@ -14,6 +14,7 @@ struct UserLibraryView: View {
         return newArray
     }
     
+    @State var issueAlert: Bool = false
     @State var selectedLocation: Location? = nil
     @State var issuedBookAlert: Bool = false
     @State var searchText: String = ""
@@ -85,6 +86,7 @@ struct UserLibraryView: View {
                         BookManager.shared.issueBook(bookId: currBook.id, libraryId: selectedLocation.libraryId.id, accessToken: UserDefaults.standard.string(forKey: "authToken") ?? "") { result in
                             switch result {
                             case .success:
+                                issueAlert = true
                                 print("Book issued successfully")
                             case .failure:
                                 print("Failed to issue book")
@@ -93,7 +95,7 @@ struct UserLibraryView: View {
                     }) {
                         Text("Issue")
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            .foregroundColor(.textTertiaryColors)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color.accentColor)
@@ -106,6 +108,9 @@ struct UserLibraryView: View {
                     selectedLocation = currBook.location.first
                 }
             }
+        }
+        .alert("Issue Request sent to Librarian", isPresented: $issueAlert) {
+            
         }
         .onAppear {
             let accessToken = UserManager.shared.accessToken

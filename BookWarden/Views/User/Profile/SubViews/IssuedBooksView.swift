@@ -15,18 +15,19 @@ struct IssuedBooksView: View {
         "https://m.media-amazon.com/images/I/81DXIOk9glL._AC_UY436_FMwebp_QL65_.jpg","https://m.media-amazon.com/images/I/61aJc8wQX4L._AC_UY436_FMwebp_QL65_.jpg"
             ]
     
-    var books: [Book]
+    @ObservedObject var userManager = UserManager.shared
+//    var books: [Book]
     
-    init(books: [Book]) {
-        self.books = books
-    }
+//    init(books: [Book]) {
+//        self.books = books
+//    }
 
     var body: some View {
         NavigationStack{
             ScrollView{
                 VStack(){
-                    ForEach((books), id: \.self) { book in
-                        IssuedBooksSSView(image: book.imageURL)
+                    ForEach((userManager.user?.getIssues() ?? []), id: \.self) { issue in
+                        IssuedBooksSSView(image: issue.getBook().imageURL)
                         
                     }
                 }

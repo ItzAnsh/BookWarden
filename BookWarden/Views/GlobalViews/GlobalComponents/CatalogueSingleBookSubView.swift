@@ -42,6 +42,7 @@ struct CatalogueSingleBookSubView: View {
                         }
                     }) {
                         Text(categoryType == .librarian ? "Request" : "ISSUE")
+                            .foregroundStyle(.textTertiaryColors)
                     }
                     .font(.headline)
                     .foregroundStyle(.white)

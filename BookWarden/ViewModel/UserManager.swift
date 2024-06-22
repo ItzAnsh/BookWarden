@@ -26,10 +26,17 @@ struct TokenResponse: Decodable {
 
 struct AllUserResponse: Codable, Hashable {
     let _id: String
-//    let name: String
+    let name: String
     let email: String
     let role: String
     let date: String
+}
+
+struct UserDetail: Codable {
+    let _id: String
+    let name: String
+    let email: String
+    let role: String
 }
 
 class UserManager: ObservableObject {
@@ -43,6 +50,7 @@ class UserManager: ObservableObject {
     @Published var accessToken: String = " eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjE5YjA1ZTQ2ZmE2ZGJhMmFlYjBiOCIsImlhdCI6MTcxNzk5MzA3MSwiZXhwIjoxNzE4NTk3ODcxfQ.9VVBZlByZFl3aezgZZWP4qYEAJmiAYmXeCr5sUjwBA4"
     @Published var role = ""
     @Published var allUsers: [AllUserResponse] = []
+    @Published var userDetail: UserDetail = UserDetail(_id: "", name: "", email: "", role: "")
     
     func loginUser(email: String, password: String, completion: @escaping (Result<UserRes, Error>) -> Void) -> TokenResponse? {
         guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/login") else {
@@ -198,17 +206,17 @@ class UserManager: ObservableObject {
             }.resume()
         }
     
-    func parseUser(userDictionary: [String: Any]) -> User? {
-        guard let id = userDictionary["_id"] as? String,
-              let email = userDictionary["email"] as? String,
-              let name = userDictionary["name"] as? String,
-              let roleString = userDictionary["role"] as? String else {
-            return nil
-        }
-        let role = getRole(roleString: roleString)
-        let user = User(id: id, name: name, email: email, contactNo: "", genrePreferences: [], roles: role)
-        return user
-    }
+//    func parseUser(userDictionary: [String: Any]) -> User? {
+//        guard let id = userDictionary["_id"] as? String,
+//              let email = userDictionary["email"] as? String,
+//              let name = userDictionary["name"] as? String,
+//              let roleString = userDictionary["role"] as? String else {
+//            return nil
+//        }
+//        let role = getRole(roleString: roleString)
+//        let user = User(id: id, name: name, email: email, contactNo: "", genrePreferences: [], roles: role)
+//        return user
+//    }
     
     func getRole(roleString: String) -> Role {
         switch roleString {
@@ -223,25 +231,72 @@ class UserManager: ObservableObject {
         }
     }
     
+    func parseUser (userDictionary : [String : Any]) -> User? {
+        guard let id = userDictionary["_id"] as? String,
+              let email = userDictionary["email"] as? String,
+              let name = userDictionary["name"] as? String,
+              var roleString = userDictionary["role"] as? String
+        else {
+            return nil
+        }
+        let role = getRole(roleString: roleString)
+        let user = User(id: id, name: name, email: email, contactNo: "", genrePreferences: [], roles: role)
+        return user
+    }
+    
     // Function to fetch user details with authorization token
-    func fetchUserDetails(accessToken: String, completion: @escaping (Result<ResponseData, Error>) -> Void) {
-        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/myProfile") else {
+    func fetchUserDetails() {
+            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/users/myProfile") else {
                 print("Invalid URL")
                 return
             }
             
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        // Add authorization token to the request header
-        let token = UserDefaults.standard.string(forKey: "authToken")!
-        print(token)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            print(String(data: data ?? Data(), encoding: .utf8) ?? "")
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            // Add authorization token to the request header
+            let token = UserDefaults.standard.string(forKey: "authToken")!
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {
+                    print("Error fetching data: \(String(describing: error))")
+                    return
+                }
+                
+                if let httpResponse = response as? HTTPURLResponse {
+                    if !(200...299).contains(httpResponse.statusCode) {
+                        print("Error: HTTP status code \(httpResponse.statusCode)")
+                        return
+                    }
+                }
+                
+                do {
+                    // Decode the response
+                    let responseDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                    
+                    if let userDetailsArray = responseDict?["UserDetails"] as? [[String: Any]] {
+                        // Transform to UserDetail
+                        let userDetailData = try JSONSerialization.data(withJSONObject: userDetailsArray)
+                        let userDetails = try JSONDecoder().decode([UserDetail].self, from: userDetailData)
+                        
+                        DispatchQueue.main.async {
+                            self.allUsers = userDetails.map { AllUserResponse(_id: $0._id, name: $0.name, email: $0.email, role: $0.role, date: "") }
+                            self.userDetail = UserDetail(_id: userDetails[0]._id, name: userDetails[0].name, email: userDetails[0].email, role: userDetails[0].role)
+                            print("User details fetched and updated: \(self.allUsers)")
+                        }
+                    } else {
+                        print("Invalid response structure")
+                    }
+                } catch {
+                    print("Error decoding data: \(error)")
+                }
+            }
+            
+            task.resume()
         }
-    }
+    
+    
 }
 
 //var userManager = UserManager.shared
