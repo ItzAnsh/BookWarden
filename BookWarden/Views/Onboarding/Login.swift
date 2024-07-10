@@ -1,5 +1,4 @@
 import SwiftUI
-//import KeychainAccess
 
 enum Field {
     
@@ -16,8 +15,10 @@ struct Login: View {
     @FocusState private var focusedField: Field?
     
     @Environment(\.colorScheme) var colorScheme
-    
     @State var tapped: Bool = false
+    
+    @State var showAlert: Bool = false
+    @State var alertMessage: String = ""
     
 //    @AppStorage("authToken") private var authToken = ""
 //    @State private var accessToken: String = ""
@@ -107,7 +108,6 @@ struct Login: View {
                                 .foregroundColor(Color.accentColor)
                         }
                         .frame(maxWidth: .infinity)
-                        
                         Spacer()
                         
                         Text("Apple collects your data in app, which is not associated with your Apple ID, in order to improve and personalise the App.")
@@ -117,8 +117,11 @@ struct Login: View {
                 }
                 .padding(.horizontal)
             }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-       
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        // Show alert if showAlert is true
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Invalid Input"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     private func login(email: String, password: String) {

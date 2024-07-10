@@ -1,10 +1,3 @@
-//
-//  CatalogueSingleBookSubView.swift
-//  BookWarden
-//
-//  Created by Ansh Bhasin on 31/05/24.
-//
-
 import SwiftUI
 
 enum CatalogueTypes {
@@ -13,29 +6,43 @@ enum CatalogueTypes {
 }
 
 struct CatalogueSingleBookSubView: View {
-    var image: URL
+    @Binding var alertState: Bool
+    var book: Book
     var categoryType: CatalogueTypes = .member
     var available: Bool = true
+    
+//    @Binding var bookLibrary: String?
+    @Binding var bookToDelete: String?
+    @Binding var currBook: Book?
+    
     var body: some View {
-        VStack(spacing: 10) {
-            AsyncImage(url: image) {image in
-                image
-                    .resizable()
-                    .frame(width: 161, height: 201)
-                    .scaledToFill()
-                if available {
-                    
+        VStack(alignment: .leading, spacing: 10) {
+            NavigationLink(destination: BookDescriptionView(book: book)) {
+                AsyncImage(url: book.imageURL) { image in
+                    image
+                        .resizable()
+                        .frame(width: 161, height: 201)
+                        .scaledToFill()
+                } placeholder: {
+                    ProgressView()
                 }
-                
-            } placeholder: {
-                ProgressView()
             }
             
             VStack {
                 HStack {
-                    
-                    Button(action: {}) {
+                    Button(action: {
+                        // Action for the Request button
+                        currBook = book
+                        if categoryType == .member {
+                            alertState = true
+                            currBook = book
+                        } else {
+                            
+                            bookToDelete = book.id
+                        }
+                    }) {
                         Text(categoryType == .librarian ? "Request" : "ISSUE")
+                            .foregroundStyle(.textTertiaryColors)
                     }
                     .font(.headline)
                     .foregroundStyle(.white)
@@ -47,16 +54,22 @@ struct CatalogueSingleBookSubView: View {
                     
                     Spacer()
                     
-                    Image(systemName: categoryType == .librarian ? "trash.fill" : "ellipsis")
-                        .font(.system(size: 17))
-                        .foregroundColor(categoryType == .librarian ? /*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/ : .textPrimaryColors)
+                    Button(action: {
+                        if categoryType == .member {
+                            
+                        } else {
+                            alertState = true
+                            bookToDelete = book.id
+                        }
+                    }) {
+                        Image(systemName: categoryType == .librarian ? "trash.fill" : "ellipsis")
+                            .font(.system(size: 17))
+                            .foregroundColor(categoryType == .librarian ? .blue : .textPrimaryColors)
+                    }
                 }
             }
         }
+        .frame(maxWidth: .infinity / 2)
+        .frame(width: 161)
     }
 }
-
-
-//#Preview {
-//    CatalogueSingleBookSubView(image: URL(string: "https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg") ?? "")
-//}

@@ -7,11 +7,11 @@
 
 import Foundation
 
-class IssueManager {
+class IssueManager: ObservableObject {
     private init() {}
     static let shared = IssueManager()
     
-    private(set) var issues: [Issue] = []
+    @Published var issues: [Issue] = []
     
     func addIssue(_ issue: Issue, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
         guard !issues.contains(where: { $0.getId() == issue.getId() }) else {
@@ -38,72 +38,229 @@ class IssueManager {
         }
     }
     
-//    func fetchIssues(accessToken: String, completion: @escaping (Result<[Issue], Error>) -> Void) {
-//        guard let url = URL(string: "https://your-api-url.com/issues") else {
-//            completion(.failure(NetworkError.invalidURL))
-//            return
-//        }
-//        
-//        var urlRequest = URLRequest(url: url)
-//        urlRequest.httpMethod = "GET"
-//        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-//        
-//        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-//                completion(.failure(NetworkError.invalidResponse))
-//                return
-//            }
-//            guard let data = data else {
-//                completion(.failure(NetworkError.noData))
-//                return
-//            }
-//            do {
-//                let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
-//                let issues = jsonArray?.compactMap { dict -> Issue? in
-//                    guard let id = dict["_id"] as? String,
-//                          let bookId = dict["bookId"] as? String,
-//                          let userId = dict["userId"] as? String,
-//                          let issuedDateString = dict["issuedDate"] as? String,
-//                          let deadlineString = dict["deadline"] as? String,
-//                          let statusString = dict["status"] as? String,
-//                          let issuedDate = ISO8601DateFormatter().date(from: issuedDateString),
-//                          let deadline = ISO8601DateFormatter().date(from: deadlineString),
-//                          let status = IssueStatus(rawValue: statusString) else {
-//                        return nil
-//                    }
-//                    
-//                    let returnDate: Date? = {
-//                        if let returnDateString = dict["returnDate"] as? String {
-//                            return ISO8601DateFormatter().date(from: returnDateString)
-//                        }
-//                        return nil
-//                    }()
-//                    
-//                    return Issue(id: id,
-//                                 bookId: bookId,
-//                                 userId: userId,
-//                                 issuedDate: issuedDate,
-//                                 deadline: deadline,
-//                                 status: status,
-//                                 returnDate: returnDate)
-//                }
-//                DispatchQueue.main.async {
-//                    guard let issues = issues else {
-//                        completion(.failure(NetworkError.noData))
-//                        return
-//                    }
-//                    self.issues = issues
-//                    completion(.success(issues))
-//                }
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }.resume()
-//    }
+    func getIssueStatus(issueString : String) -> IssueStatus {
+        switch issueString{
+        case "rejected" :
+            return .rejected
+        case "requested" :
+            return .requested
+        case "issued" ://
+            return .issued
+        case "returned" :
+            return .returned
+        case "fined" ://
+            return .fined
+        case "fining" ://
+            return .fining
+        case "fining-returned" :
+            return .finingreturned
+        case "renew-requested" ://
+            return .renewrequested
+        case "renew-rejected" ://
+            return .renewrejected
+        case "renew-approved" ://
+            return .renewapproved
+        default :
+            return .issued
+        }
+    }
+    
+    func fetchLibraryIssues(accessToken: String, completion: @escaping (Result<[Issue], Error>) -> Void){
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/getLibraryIssues") else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
+        print("Token: \(UserManager.shared.accessToken)")
+        
+        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse))
+                return
+            }
+            guard let data = data else {
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            do {
+                
+                guard let jsonObjectArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] else {
+                    completion(.failure(NetworkError.invalidData))
+                    return
+                }
+                var issues = [Issue]()
+                for jsonObject in jsonObjectArray {
+                    guard let issue = self.parseIssue(jsonDictionary: jsonObject) else {
+                        continue
+                    }
+                    issues.append(issue)
+                }
+                completion(.success(issues))
+            } catch {
+                completion(.failure(NetworkError.decodingError))
+            }
+        }.resume()
+    }
+    
+    func rejectIssue(issueId: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
+            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/rejectIssue") else {
+                completion(.failure(NetworkError.invalidURL))
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PATCH"
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let body: [String: Any] = ["issueId": issueId]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+            } catch {
+                completion(.failure(NetworkError.encodingError))
+                return
+            }
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    completion(.failure(NetworkError.badHTTPResponse))
+                    return
+                }
+            }.resume()
+        }
+    
+    func approveIssue(issueId: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/approveIssue") else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = ["issueId": issueId]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+        } catch {
+            completion(.failure(NetworkError.encodingError))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(NetworkError.badHTTPResponse))
+                return
+            }
+        }.resume()
+    }
+    
+    func fetchIssueDetails(issueId: String, accessToken: String, completion: @escaping (Result<Issue, Error>) -> Void) {
+        guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/getSpecificIssue/\(issueId)") else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
+        print("Token: \(UserManager.shared.accessToken)")
+        
+        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse))
+                return
+            }
+            guard let data = data else {
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            do {
+                guard let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                    completion(.failure(NetworkError.invalidData))
+                    return
+                }
+                guard let issue = self.parseIssue(jsonDictionary: jsonObject) else {
+                    print("Couldn't parse issue")
+                    completion(.failure(NetworkError.invalidData))
+                    return
+                }
+                completion(.success(issue))
+            } catch {
+                completion(.failure(NetworkError.decodingError))
+            }
+        }.resume()
+    }
+
+    func parseIssue(jsonDictionary : [String: Any]) -> Issue? {
+        guard let userJson = jsonDictionary["userId"] as? [String: Any],
+              let user = UserManager.shared.parseUser(userDictionary: userJson)
+        else {
+            print("Could't parse user")
+            return nil
+        }
+        
+        guard let bookJson = jsonDictionary["bookId"] as? [String: Any],
+              let book = BookManager.shared.parseBook(bookDictionary: bookJson)
+        else{
+            print("Couldn't parse Book")
+            return nil
+        }
+        
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // Include fractional seconds
+
+        
+        guard let issueDateString = jsonDictionary["date"] as? String,
+              let date = isoFormatter.date(from: issueDateString)
+        else {
+            print("Couldn't parse dates")
+            return nil
+        }
+        
+        guard let deadlineDateString = jsonDictionary["deadline"] as? String,
+              let deadlineDate = isoFormatter.date(from: deadlineDateString)
+        else {
+            print("Couldn't parsess dates")
+            return nil
+        }
+        
+        
+        guard let statusString = jsonDictionary["status"] as? String,
+              let id = jsonDictionary["_id"] as? String
+        else {
+            print("Couldn't parse status")
+            return nil
+        }
+        let status = getIssueStatus(issueString: statusString)
+        return Issue(id: id, book: book, user: user, issuedDate: date, deadline: deadlineDate, status: status)
+    }
     
     private func saveIssueToBackend(_ issue: Issue, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
             guard let url = URL(string: "https://your-api-url.com/saveIssue") else {
@@ -140,6 +297,50 @@ class IssueManager {
                 completion(.success(()))
             }.resume()
         }
+    
+    func approveReturn(issueId: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
+            guard let url = URL(string: "https://bookwarden-server.onrender.com/api/librarian/approveReturn") else {
+                completion(.failure(NetworkError.invalidURL))
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PATCH"
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let body: [String: Any] = ["issueId": issueId]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+            } catch {
+                completion(.failure(NetworkError.encodingError))
+                return
+            }
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    completion(.failure(NetworkError.badHTTPResponse))
+                    return
+                }
+                
+                // Update issue status locally
+                DispatchQueue.main.async {
+                    if let index = self.issues.firstIndex(where: { $0.getId() == issueId }) {
+                        self.issues[index].setStatus(.returned)
+                    }
+                    completion(.success(()))
+                }
+            }.resume()
+        }
+        
+    
     enum IssueManagerError: Error {
         case issueAlreadyExists
     }
@@ -149,5 +350,8 @@ class IssueManager {
         case invalidResponse
         case noData
         case badHTTPResponse
+        case decodingError
+        case invalidData
+        case encodingError
     }
 }

@@ -25,6 +25,15 @@ class GenreManager {
         deleteGenreFromBackend(id: id, completion: completion)
     }
     
+    func parseGenre(genreJson: [String : Any]) -> Genre? {
+        guard let id = genreJson["_id"] as? String,
+              let name = genreJson["name"] as? String
+        else{
+            return nil
+        }
+        return Genre(id: id, name: name, v: 0)
+    }
+    
     private func saveGenreToBackend(_ genre: Genre, completion: @escaping ((Result<Void, Error>) -> Void)) {
         // Example: use URLSession to save the genre to the backend
         guard let url = URL(string: "https://yourapi.com/saveGenre") else {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserDetailView: View {
-    let userName: String
+    let userMail: String
     
     var body: some View {
         VStack(spacing: 20) {
@@ -18,7 +18,7 @@ struct UserDetailView: View {
                     .foregroundColor(.gray.opacity(0.2))
                 
                 VStack(alignment: .leading) {
-                    Text(userName)
+                    Text(userMail)
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -88,5 +88,5 @@ struct UserDetailView: View {
 }
 
 #Preview {
-    UserDetailView(userName: "AShiLibrarian")
+    UserDetailView(userMail: "User")
 }

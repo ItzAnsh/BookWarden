@@ -127,7 +127,7 @@ struct Fine: Codable, Hashable {
         }
         
         let bookManager = BookManager.shared
-        guard let book = bookManager.getBook(byId: issue.getBookId().id) else {
+        guard let book = bookManager.getBook(byId: issue.getBook().id) else {
             completion(.failure(FineInitializationError.bookDetailsNotFound))
             return
         }

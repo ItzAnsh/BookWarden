@@ -8,33 +8,71 @@
 import SwiftUI
 
 struct UserRecommendationView: View {
-    var images: [String] = ["https://m.media-amazon.com/images/I/81w7a13pbnL.AC_SX500.jpg", "https://m.media-amazon.com/images/I/71FSf6i6yvL.AC_SX500.jpg", "https://m.media-amazon.com/images/I/81xVpyjUC0L.AC_SX500.jpg", "https://m.media-amazon.com/images/I/71kUYNSKKgL.AC_SX500.jpg"]
+    @State private var preferredBooks: [Book] = []
+    @State private var isLoading: Bool = true
+    @State private var errorMessage: String?
 
     var body: some View {
         VStack(alignment: .leading) {
             TitleComponent(title: "You May Like", page: ArrivalBooks())
             
-            ScrollView(.horizontal) {
-                HStack(spacing: 17) {
-                    ForEach((images), id: \.self) {image in
-                        AsyncImage(url: URL(string: image)) {image in
-                            image
-                                .resizable()
-                                .frame(width: 150, height: 200)
-                                .scaledToFit()
-                                
-                        } placeholder: {}
-                        
-                        
-                            
+            if isLoading {
+                ProgressView("Loading Recommendations...")
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else if let errorMessage = errorMessage {
+                Text("Error: \(errorMessage)")
+                    .foregroundColor(.red)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else {
+                ScrollView(.horizontal) {
+                    HStack(spacing: 17) {
+                        ForEach(preferredBooks) { book in
+                            NavigationLink(destination: BookDescriptionView(book: book)) {
+                                AsyncImage(url:  book.imageURL) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(width: 150, height: 200)
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .frame(width: 150, height: 200)
+                                            .scaledToFit()
+                                    case .failure:
+                                        Image(systemName: "photo")
+                                            .frame(width: 150, height: 200)
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                .safeAreaPadding(.horizontal)
+                .scrollIndicators(.hidden)
             }
-            .safeAreaPadding(.horizontal)
-            .scrollIndicators(.hidden)
         }
         .background(grayGradient)
-        
+        .onAppear {
+            fetchPreferredBooks()
+        }
+    }
+
+    private func fetchPreferredBooks() {
+        let accessToken = UserManager.shared.accessToken
+        bookManager.fetchPreferredBooks(accessToken: accessToken) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let books):
+                    self.preferredBooks = books
+                    self.isLoading = false
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                    self.isLoading = false
+                }
+            }
+        }
     }
 }
 
