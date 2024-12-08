@@ -11,7 +11,7 @@ struct BookTopView: View {
     var image: URL
     var title: String
     var author: String
-    
+    var location: String
     
     
     var body: some View {
@@ -95,13 +95,14 @@ struct BookTopView: View {
                         .padding(.top, 10)
                         .padding(.horizontal, 20)
                         
+                        if location != "Not available" {
+                            Text("Available at Shelf-\((1...40).randomElement()!)")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .padding(.top, 10)
+                        }
                         
-                        Text("Available at Shelf-3")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .padding(.top, 10)
-                        
-                        Text("Fleming block library")
+                        Text("\(location)")
                             .font(.caption)
                             .foregroundColor(.gray)
                             .padding(.bottom, 10)
@@ -136,6 +137,10 @@ struct BookDescriptionView: View {
     @State var issuedBookAlert: Bool = false
     @State var liked: Bool = false
     @State var issuedStatus: IssueStatus? = nil
+    @State var selectedLocation: Location?
+    @State var issueAlert : Bool = false
+    
+//    @State var currBook: Book = self.book
     
     
     @Environment(\.colorScheme) var colorScheme
@@ -144,7 +149,7 @@ struct BookDescriptionView: View {
             NavigationStack {
                 
                 VStack {
-                    BookTopView(screenSize: .zero, alertState: $issuedBookAlert, liked: $liked, issuedStatus: $issuedStatus, image: book.imageURL, title: book.title, author: book.author)
+                    BookTopView(screenSize: .zero, alertState: $issuedBookAlert, liked: $liked, issuedStatus: $issuedStatus, image: book.imageURL, title: book.title, author: book.author, location: book.location.count > 0 ? book.location[0].libraryId.getName() : "Not available")
 //                    ScrollView(.horizontal) {
                         HStack {
                             VStack(alignment: .center) {
@@ -251,21 +256,95 @@ struct BookDescriptionView: View {
             }
         }
         .background(colorScheme == .light ? Color(UIColor.systemGray6) : Color(.black))
-        .alert("Are you sure?", isPresented: $issuedBookAlert) {
-//                Alert("Are you sure?") {
-            Button("Issue", role: .cancel) {
-                BookManager.shared.issueBook(bookId: book.id, libraryId: book.location[0].id, accessToken: UserDefaults.standard.string(forKey: "authToken") ?? "") {
-                    _ in
-                }
-            }
-                Button("Cancel", role: .destructive) {}
-                
+//        .alert("Are you sure?", isPresented: $issuedBookAlert) {
+////                Alert("Are you sure?") {
+//            Button("Issue", role: .cancel) {
+//                BookManager.shared.issueBook(bookId: book.id, libraryId: book.location[0].id, accessToken: UserDefaults.standard.string(forKey: "authToken") ?? "") {
+//                    _ in
 //                }
-        } message: {
-            Text("Are you sure you want to issue this book")
-        }
+//            }
+//                Button("Cancel", role: .destructive) {}
+//                
+////                }
+//        } message: {
+//            Text("Are you sure you want to issue this book")
+//        }
         .navigationTitle(book.title)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $issuedBookAlert, onDismiss: {
+            selectedLocation = nil
+//            book = nil
+        }) {
+//            if let currBook = book {
+                VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            AsyncImage(url: book.imageURL ?? URL(string: "https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/244c61196936933.Y3JvcCw3MjksNTcwLDg2LDE0.png")!) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: 94, height: 133)
+                                    .scaledToFill()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            VStack(alignment: .leading) {
+                                Text(book.title)
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                Text(book.author)
+                                    .font(.headline)
+                                    .fontWeight(.regular)
+                            }
+                        }
+                        Divider()
+                        HStack {
+                            Text("Select a library")
+                            Spacer()
+                            Picker("", selection: $selectedLocation) {
+                                ForEach((book.location), id: \.self) { location in
+                                    Text(location.libraryId.getName())
+                                }
+                            }
+                            .accentColor(.black)
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical)
+                    .background(Color(UIColor.systemGray6))
+                    .cornerRadius(12)
+                    
+                    Button(action: {
+                        guard let selectedLocation = selectedLocation else { return }
+                        BookManager.shared.issueBook(bookId: book.id, libraryId: selectedLocation.libraryId.id, accessToken: UserDefaults.standard.string(forKey: "authToken") ?? "") { result in
+                            switch result {
+                            case .success:
+                                issueAlert = true
+                                print("Book issued successfully")
+                            case .failure:
+                                print("Failed to issue book")
+                            }
+                        }
+                    }) {
+                        Text("Issue")
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.accentColor)
+                            .cornerRadius(12)
+                    }
+                }
+                .padding()
+                .presentationDetents([.medium])
+                .onAppear {
+                    selectedLocation = book.location.first
+                }
+//            }
+        }
+        .alert("Issue Request sent to Librarian", isPresented: $issueAlert) {
+            
+        }
     }
 }
 

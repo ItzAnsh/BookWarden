@@ -16,7 +16,7 @@ struct TitleComponent<Destination: View>: View {
                 HStack() {
                     Text(title)
                     
-                    Image(systemName: "chevron.right")
+//                    Image(systemName: "chevron.right")
                 }
                 .foregroundStyle(.accent)
                 .fontWeight(.semibold)

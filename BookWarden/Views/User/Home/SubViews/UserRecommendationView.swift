@@ -27,21 +27,23 @@ struct UserRecommendationView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: 17) {
                         ForEach(preferredBooks) { book in
-                            AsyncImage(url:  book.imageURL) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                        .frame(width: 150, height: 200)
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                        .frame(width: 150, height: 200)
-                                        .scaledToFit()
-                                case .failure:
-                                    Image(systemName: "photo")
-                                        .frame(width: 150, height: 200)
-                                @unknown default:
-                                    EmptyView()
+                            NavigationLink(destination: BookDescriptionView(book: book)) {
+                                AsyncImage(url:  book.imageURL) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(width: 150, height: 200)
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .frame(width: 150, height: 200)
+                                            .scaledToFit()
+                                    case .failure:
+                                        Image(systemName: "photo")
+                                            .frame(width: 150, height: 200)
+                                    @unknown default:
+                                        EmptyView()
+                                    }
                                 }
                             }
                         }

@@ -17,6 +17,9 @@ struct Login: View {
     @Environment(\.colorScheme) var colorScheme
     @State var tapped: Bool = false
     
+    @State var showAlert: Bool = false
+    @State var alertMessage: String = ""
+    
 //    @AppStorage("authToken") private var authToken = ""
 //    @State private var accessToken: String = ""
     

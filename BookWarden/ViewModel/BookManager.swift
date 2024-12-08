@@ -86,7 +86,7 @@ class BookManager: ObservableObject {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken")!)", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
@@ -108,6 +108,7 @@ class BookManager: ObservableObject {
                 let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                 if let preferredBooksArray = json?["PreferredBooks"] as? [[String: Any]] {
                     let preferredBooks = preferredBooksArray.compactMap { self.parseBook(bookDictionary: $0) }
+                    print(preferredBooks)
                     
                     DispatchQueue.main.async {
                         completion(.success(preferredBooks))
@@ -372,37 +373,94 @@ class BookManager: ObservableObject {
 
     
     func parseBook (bookDictionary : [String : Any]) -> Book?{
-        guard let id = bookDictionary["_id"] as? String,
-              let author = bookDictionary["author"] as? String,
-              let title = bookDictionary["title"] as? String,
-              let publisher = bookDictionary["publisher"] as? String,
-              let description = bookDictionary["description"] as? String,
-              let genreDictionary = bookDictionary["genre"] as? [String : Any],
-              let price = bookDictionary["price"] as? Double,
-              let isbn10 = bookDictionary["isbn10"] as? String,
-              let isbn13 = bookDictionary["isbn13"] as? String,
-              let v = bookDictionary["__v"] as? Int,
-              let language = bookDictionary["language"] as? String,
-              let length = bookDictionary["length"] as? Int,
-              let imageURLString = bookDictionary["imageURL"] as? String,
-              let locationArr = bookDictionary["locations"] as? [Location]
-                //              let locationId = try JSONSerialization.jsonObject(with: locationArr, options: []) as? [[String: Any]] {
-                
-                //              }
-        else{
-            print("Something is mssing")
-            return nil
-        }
-        guard let imageURL = URL(string: imageURLString) else {
-            print("URL wrong")
-            return nil
-        }
-        guard let genre = GenreManager.shared.parseGenre(genreJson: genreDictionary) else {
-            print("Couldn't parse genre")
-            return nil
-        }
-        return Book(id: id, title: title, author: author, description: description, genre: genre, price: price, publisher: publisher, language: language, length: length, imageURL: imageURL, isbn10: isbn10, isbn13: isbn13, v: v, location: locationArr)
+            let dict = bookDictionary
+            guard let id = dict["_id"] as? String,
+                  let title = dict["title"] as? String,
+                  let author = dict["author"] as? String,
+                  let description = dict["description"] as? String,
+                  let genreDictionary = dict["genre"] as? [String: Any],
+                  let genreName = genreDictionary["name"] as? String,
+                  let genreId = genreDictionary["_id"] as? String,
+                  let price = dict["price"] as? Double,
+                  let publisher = dict["publisher"] as? String,
+                  let language = dict["language"] as? String,
+                  let length = dict["length"] as? Int,
+                  let imageURLString = dict["imageURL"] as? String,
+                  let imageURL = URL(string: imageURLString),
+                  let isbn10 = dict["isbn10"] as? String,
+                  let isbn13 = dict["isbn13"] as? String,
+                  let v = dict["__v"] as? Int,
+                  let locationsArray = dict["locations"] as? [[String: Any]] else {
+                print("Book data invalid")
+                return nil
+            }
+
+            let locations: [Location] = locationsArray.compactMap { locationDict in
+                guard let libraryDict = locationDict["libraryId"] as? [String: Any],
+                      let libraryId = libraryDict["_id"] as? String,
+                      let libraryName = libraryDict["name"] as? String,
+                      let libraryLocation = libraryDict["location"] as? String,
+                      let contactNo = libraryDict["contactNo"] as? String,
+                      let contactEmail = libraryDict["contactEmail"] as? String,
+                      let librarianDict = libraryDict["librarian"] as? [String: Any],
+                      let librarianId = librarianDict["_id"] as? String,
+                      let librarianName = librarianDict["name"] as? String,
+                      let librarianEmail = librarianDict["email"] as? String,
+//                                  let librarianPassword = librarianDict["password"] as? String,
+//                                  let librarianRole = librarianDict["role"] as? String,
+                      let librarianAdminId = librarianDict["adminId"] as? String,
+//                                  let librarianDate = librarianDict["date"] as? String,
+                      let librarianV = librarianDict["__v"] as? Int,
+                      let totalBooks = libraryDict["totalBooks"] as? Int,
+                      let adminId = libraryDict["adminId"] as? String,
+                      let issuePeriod = libraryDict["issuePeriod"] as? Int,
+                      let maxBooks = libraryDict["maxBooks"] as? Int,
+                      let fineInterest = libraryDict["fineInterest"] as? Int,
+                      let libraryV = libraryDict["__v"] as? Int,
+                      let totalQuantity = locationDict["totalQuantity"] as? Int,
+                      let availableQuantity = locationDict["availableQuantity"] as? Int else {
+                    return nil
+                }
+
+                let librarian = User(
+                    id: librarianId,
+                    name: librarianName,
+                    email: librarianEmail,
+                    contactNo: contactNo,
+                    genrePreferences: [],
+                    roles: .librarian
+                )
+
+                let library = Library(
+                    id: libraryId,
+                    name: libraryName,
+                    location: libraryLocation,
+                    contactNo: contactNo,
+                    contactEmail: contactEmail,
+                    totalBooks: totalBooks,
+                    issuePeriod: issuePeriod,
+                    maxBooks: maxBooks,
+                    fineInterest: fineInterest,
+                    librarian: librarian,
+                    adminId: adminId
+                )
+
+                return Location(
+                    id: library.id,
+                    libraryId: library,
+                    bookId: id,
+                    totalQuantity: totalQuantity,
+                    availableQuantity: availableQuantity,
+                    v: libraryV
+                )
+            }
+
+            guard let genre = GenreManager.shared.parseGenre(genreJson: genreDictionary) else {
+                print("Couldn't parse genre")
+                return nil
+            }
         
+        return Book(id: id, title: title, author: author, description: description, genre: genre, price: price, publisher: publisher, language: language, length: length, imageURL: imageURL, isbn10: isbn10, isbn13: isbn13, v: v, location: locations)
     }
     
     
@@ -801,7 +859,7 @@ class BookManager: ObservableObject {
     }
     
     func issueBook(bookId: String, libraryId: String, accessToken: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let url = URL(string: "http://localhost:3000/api/users/issueBook") else {
+        guard let url = URL(string: "\(apiUrl)/users/issueBook") else {
             completion(.failure(NetworkError.invalidURL))
             print("invalid url")
             return
@@ -809,13 +867,13 @@ class BookManager: ObservableObject {
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(UserDefaults.standard.string(forKey: "authToken") ?? "")", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body = ["bookId": bookId, "libraryId": libraryId]
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
-            print(String(data: request.httpBody ?? Data(), encoding: .utf8))
+            print(String(data: request.httpBody ?? Data(), encoding: .utf8)!)
         } catch {
             print("error found")
         }
@@ -827,12 +885,12 @@ class BookManager: ObservableObject {
                 return
             }
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
                 DispatchQueue.main.async {
                     //                        self.books.removeAll { $0.id == bookID }
                     print("Domne")
                     completion(.success(()))
-                    print("Book Deleted")
+//                    print("Book Deleted")
                 }
             } else {
                 //                    print(httpResponse.statusCode)
@@ -840,6 +898,112 @@ class BookManager: ObservableObject {
             }
         }.resume()
     }
+    
+//    func bookParser(bookDict: [String: Any]) -> Book? {
+//        let books = bookDict.compactMap { dict -> Book? in
+//            guard let id = dict["_id"] as? String,
+//                  let title = dict["title"] as? String,
+//                  let author = dict["author"] as? String,
+//                  let description = dict["description"] as? String,
+//                  let genreDictionary = dict["genre"] as? [String: Any],
+//                  let genreName = genreDictionary["name"] as? String,
+//                  let genreId = genreDictionary["_id"] as? String,
+//                  let price = dict["price"] as? Double,
+//                  let publisher = dict["publisher"] as? String,
+//                  let language = dict["language"] as? String,
+//                  let length = dict["length"] as? Int,
+//                  let imageURLString = dict["imageURL"] as? String,
+//                  let imageURL = URL(string: imageURLString),
+//                  let isbn10 = dict["isbn10"] as? String,
+//                  let isbn13 = dict["isbn13"] as? String,
+//                  let v = dict["__v"] as? Int,
+//                  let locationsArray = dict["locations"] as? [[String: Any]] else {
+//                print("Book data invalid")
+//                return nil
+//            }
+//
+//            let locations: [Location] = locationsArray.compactMap { locationDict in
+//                guard let libraryDict = locationDict["libraryId"] as? [String: Any],
+//                      let libraryId = libraryDict["_id"] as? String,
+//                      let libraryName = libraryDict["name"] as? String,
+//                      let libraryLocation = libraryDict["location"] as? String,
+//                      let contactNo = libraryDict["contactNo"] as? String,
+//                      let contactEmail = libraryDict["contactEmail"] as? String,
+//                      let librarianDict = libraryDict["librarian"] as? [String: Any],
+//                      let librarianId = librarianDict["_id"] as? String,
+//                      let librarianName = librarianDict["name"] as? String,
+//                      let librarianEmail = librarianDict["email"] as? String,
+////                                  let librarianPassword = librarianDict["password"] as? String,
+////                                  let librarianRole = librarianDict["role"] as? String,
+//                      let librarianAdminId = librarianDict["adminId"] as? String,
+////                                  let librarianDate = librarianDict["date"] as? String,
+//                      let librarianV = librarianDict["__v"] as? Int,
+//                      let totalBooks = libraryDict["totalBooks"] as? Int,
+//                      let adminId = libraryDict["adminId"] as? String,
+//                      let issuePeriod = libraryDict["issuePeriod"] as? Int,
+//                      let maxBooks = libraryDict["maxBooks"] as? Int,
+//                      let fineInterest = libraryDict["fineInterest"] as? Int,
+//                      let libraryV = libraryDict["__v"] as? Int,
+//                      let totalQuantity = locationDict["totalQuantity"] as? Int,
+//                      let availableQuantity = locationDict["availableQuantity"] as? Int else {
+//                    return nil
+//                }
+//
+//                let librarian = User(
+//                    id: librarianId,
+//                    name: librarianName,
+//                    email: librarianEmail,
+//                    contactNo: contactNo,
+//                    genrePreferences: [],
+//                    roles: .librarian
+//                )
+//
+//                let library = Library(
+//                    id: libraryId,
+//                    name: libraryName,
+//                    location: libraryLocation,
+//                    contactNo: contactNo,
+//                    contactEmail: contactEmail,
+//                    totalBooks: totalBooks,
+//                    issuePeriod: issuePeriod,
+//                    maxBooks: maxBooks,
+//                    fineInterest: fineInterest,
+//                    librarian: librarian,
+//                    adminId: adminId
+//                )
+//
+//                return Location(
+//                    id: library.id,
+//                    libraryId: library,
+//                    bookId: id,
+//                    totalQuantity: totalQuantity,
+//                    availableQuantity: availableQuantity,
+//                    v: libraryV
+//                )
+//            }
+//
+//            guard let genre = GenreManager.shared.parseGenre(genreJson: genreDictionary) else {
+//                print("Couldn't parse genre")
+//                return nil
+//            }
+//
+//            return Book(
+//                id: id,
+//                title: title,
+//                author: author,
+//                description: description,
+//                genre: Genre(id: genreId, name: genreName, v: 0),
+//                price: price,
+//                publisher: publisher,
+//                language: language,
+//                length: length,
+//                imageURL: imageURL,
+//                isbn10: isbn10,
+//                isbn13: isbn13,
+//                v: v,
+//                location: locations
+//            )
+//    }
 }
 
 
